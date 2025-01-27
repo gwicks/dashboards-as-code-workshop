@@ -1,0 +1,26 @@
+[
+	{
+		"name": "users",
+		"has_http": false,
+		"has_grpc": false,
+		"github": "https://github.com/org/users"
+	},
+	{
+		"name": "payments",
+		"has_http": false,
+		"has_grpc": false,
+		"github": "https://github.com/org/payments"
+	},
+	{
+		"name": "orders",
+		"has_http": true,
+		"has_grpc": false,
+		"github": "https://github.com/org/orders"
+	},
+	{
+		"name": "products",
+		"has_http": true,
+		"has_grpc": true,
+		"github": "https://github.com/org/products"
+	}
+]

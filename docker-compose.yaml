@@ -1,0 +1,39 @@
+name: workshop
+
+services:
+  grafana:
+    image: grafana/grafana:11.4.0
+    restart: unless-stopped
+    ports:
+      - '3003:3000'
+    volumes:
+      - grafana_storage:/var/lib/grafana
+      - ./config/provisioning:/etc/grafana/provisioning
+    environment:
+      - GF_PATHS=/etc/grafana/provisioning
+
+  prometheus:
+    image: prom/prometheus:v3.1.0
+    volumes:
+      - ./config/prometheus.yaml:/etc/prometheus/prometheus.yml
+
+  dummy_service:
+    build: ./dummy/
+    ports:
+      - '8081:8080'
+    develop:
+      watch:
+        - action: rebuild
+          path: ./dummy
+
+  service_catalog:
+    build: ./service-catalog/
+    ports:
+      - '8082:8080'
+    develop:
+      watch:
+        - action: rebuild
+          path: ./service-catalog
+
+volumes:
+  grafana_storage: {}
