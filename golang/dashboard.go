@@ -22,14 +22,16 @@ func dashboardForService(service Service) *dashboard.DashboardBuilder {
 		)
 
 	// Overview
-	builder.WithPanel(versionStat(service).Height(3).Span(8))
+	builder.
+		WithPanel(versionStat(service).Height(4).Span(8)).
+		WithPanel(logsVolumeTimeseries(service).Height(4).Span(16))
 
 	// gRPC row, if relevant
 	if service.HasGRPC {
 		builder.WithRow(dashboard.NewRowBuilder("gRPC")).
 			WithPanel(grpcRequestsTimeseries(service).Height(8)).
 			WithPanel(grpcLatenciesHeatmap(service).Height(8)).
-			WithPanel(grpcLogsPanel(service).Height(8))
+			WithPanel(grpcLogsPanel(service).Height(8).Span(24))
 	}
 
 	// HTTP row, if relevant
@@ -38,7 +40,7 @@ func dashboardForService(service Service) *dashboard.DashboardBuilder {
 			WithRow(dashboard.NewRowBuilder("HTTP")).
 			WithPanel(httpRequestsTimeseries(service).Height(8)).
 			WithPanel(httpLatenciesHeatmap(service).Height(8)).
-			WithPanel(httpLogsPanel(service).Height(8))
+			WithPanel(httpLogsPanel(service).Height(8).Span(24))
 
 	}
 

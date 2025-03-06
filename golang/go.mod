@@ -5,7 +5,7 @@ go 1.23.4
 require (
 	github.com/caarlos0/env/v11 v11.3.1
 	github.com/go-openapi/strfmt v0.23.0
-	github.com/grafana/grafana-foundation-sdk/go v0.0.0-20250115121653-5f5cd86c0700
+	github.com/grafana/grafana-foundation-sdk/go v0.0.0-20250207135815-074e905ed373
 	github.com/grafana/grafana-openapi-client-go v0.0.0-20250108132429-8d7e1f158f65
 )
 

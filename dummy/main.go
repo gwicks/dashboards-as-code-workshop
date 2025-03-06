@@ -1,9 +1,10 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"io"
-	"log"
+	"log/slog"
 	"math/rand/v2"
 	"net/http"
 	"os"
@@ -21,7 +22,6 @@ type Service struct {
 	Version string
 	HTTP    []HTTPEndpoint
 	GRPC    []GRPCEndpoint
-	Logger  *ServiceLogger
 }
 
 type HTTPEndpoint struct {
@@ -41,8 +41,6 @@ type GRPCEndpoint struct {
 	Count   [2]int // [min, max]
 	Latency [2]int // [min, max], in ms
 }
-
-var logger *log.Logger
 
 var services = []Service{
 	{
@@ -116,14 +114,14 @@ var services = []Service{
 			},
 			{
 				Service: "grpc.ProductService",
-				Method:  "updateProductStop",
+				Method:  "updateProductStock",
 				Code:    "OK",
 				Count:   [2]int{1, 10},
 				Latency: [2]int{5, 25},
 			},
 			{
 				Service: "grpc.ProductService",
-				Method:  "updateProductStop",
+				Method:  "updateProductStock",
 				Code:    "InvalidArgument",
 				Count:   [2]int{0, 8},
 				Latency: [2]int{5, 25},
@@ -135,7 +133,7 @@ var services = []Service{
 var (
 	serviceInfos = promauto.NewGaugeVec(prometheus.GaugeOpts{
 		Name: "app_infos",
-		Help: "Basic informations about a service",
+		Help: "Basic information about a service",
 	}, []string{"service", "version"})
 
 	httpRequests = promauto.NewCounterVec(prometheus.CounterOpts{
@@ -159,24 +157,24 @@ var (
 	}, []string{"service", "grpc_service", "grpc_method", "grpc_code"})
 )
 
-func emitFakeMetrics() {
+func emitFakeMetrics(logger *slog.Logger) {
 	for {
 		for _, service := range services {
-			emitFakeMetricsForService(service)
+			emitFakeMetricsForService(service, logger)
 		}
 
 		time.Sleep(5 * time.Second)
 	}
 }
 
-func emitFakeMetricsForService(service Service) {
+func emitFakeMetricsForService(service Service, logger *slog.Logger) {
 	serviceInfos.With(prometheus.Labels{"service": service.Name, "version": service.Version}).Set(1)
 
-	emitFakeHTTPMetricsForService(service)
-	emitFakeGRPCMetricsForService(service)
+	emitFakeHTTPMetricsForService(service, logger)
+	emitFakeGRPCMetricsForService(service, logger)
 }
 
-func emitFakeGRPCMetricsForService(service Service) {
+func emitFakeGRPCMetricsForService(service Service, logger *slog.Logger) {
 	for _, grpcCall := range service.GRPC {
 		labels := prometheus.Labels{
 			"service":      service.Name,
@@ -192,16 +190,26 @@ func emitFakeGRPCMetricsForService(service Service) {
 			duration := rand.N(grpcCall.Latency[1]) + grpcCall.Latency[0]
 			grpcRequestsDuration.With(labels).Observe(float64(duration) / 1000)
 
-			if grpcCall.Code == "OK" {
-				service.Logger.Info(fmt.Sprintf("%s %s with code %s took %dms", grpcCall.Service, grpcCall.Method, grpcCall.Code, duration), map[string]string{"source": "grpc"})
-			} else {
-				service.Logger.Error(fmt.Sprintf("%s %s with code %s took %dms", grpcCall.Service, grpcCall.Method, grpcCall.Code, duration), map[string]string{"source": "grpc"})
+			logData := []any{
+				"service", service.Name,
+				"source", "grpc",
+				"grpc_service", grpcCall.Service,
+				"grpc_method", grpcCall.Method,
+				"grpc_code", grpcCall.Code,
+				"duration_ms", duration,
 			}
+
+			level := slog.LevelInfo
+			if grpcCall.Code != "OK" {
+				level = slog.LevelError
+			}
+
+			logger.Log(context.Background(), level, "gRPC request handled", logData...)
 		}
 	}
 }
 
-func emitFakeHTTPMetricsForService(service Service) {
+func emitFakeHTTPMetricsForService(service Service, logger *slog.Logger) {
 	for _, httpCall := range service.HTTP {
 		labels := prometheus.Labels{
 			"service": service.Name,
@@ -217,58 +225,70 @@ func emitFakeHTTPMetricsForService(service Service) {
 			duration := rand.N(httpCall.Latency[1]) + httpCall.Latency[0]
 			httpRequestsDuration.With(labels).Observe(float64(duration) / 1000)
 
-			if httpCall.Code == http.StatusOK {
-				service.Logger.Info(fmt.Sprintf("%s %s with code %d took %dms", httpCall.Method, httpCall.Path, httpCall.Code, duration), map[string]string{"source": "http"})
-			} else {
-				service.Logger.Error(fmt.Sprintf("%s %s with code %d took %dms", httpCall.Method, httpCall.Path, httpCall.Code, duration), map[string]string{"source": "http"})
+			logData := []any{
+				"service", service.Name,
+				"source", "http",
+				"method", httpCall.Method,
+				"path", httpCall.Path,
+				"code", httpCall.Code,
+				"duration_ms", duration,
 			}
+
+			level := slog.LevelInfo
+			if httpCall.Code != http.StatusOK {
+				level = slog.LevelError
+			}
+
+			logger.Log(context.Background(), level, "HTTP request handled", logData...)
 		}
 	}
 }
 
 func main() {
-	logFile := configureLogger()
-	defer logFile.Close()
+	// Configure logger
+	logWriter, logCloser, err := logsWriter()
+	if err != nil {
+		panic(err)
+	}
+	defer logCloser()
 
+	logger := slog.New(slog.NewTextHandler(logWriter, nil))
+
+	// Start emitting fake metrics
+	go emitFakeMetrics(logger)
+
+	// Start HTTP server
 	httpPort := "8080"
 	if port := os.Getenv("HTTP_PORT"); port != "" {
 		httpPort = port
 	}
 
-	// Configure service loggers
-	for i := range services {
-		services[i].Logger = NewServiceLogger(logger, services[i].Name)
-	}
-
-	go emitFakeMetrics()
-
 	http.Handle("/metrics", promhttp.Handler())
 
-	log.Printf("Listening on :%s...", httpPort)
-	err := http.ListenAndServe(":"+httpPort, nil)
-	if err != nil {
-		log.Fatal(err)
+	fmt.Printf("Listening on :%s\n", httpPort)
+	if err := http.ListenAndServe(":"+httpPort, nil); err != nil {
+		panic(err)
 	}
 }
 
-func configureLogger() *os.File {
+func logsWriter() (io.Writer, func(), error) {
 	// Use the mounted volume path
 	logDir := "/tmp/app-logs"
 
 	// Create logs directory with permissive permissions
 	err := os.MkdirAll(logDir, 0777)
 	if err != nil {
-		log.Fatal("Failed to create log directory:", err)
+		return nil, nil, fmt.Errorf("failed to create log directory: %w", err)
 	}
 
 	// Open log file with permissive permissions
 	logFile, err := os.OpenFile(filepath.Join(logDir, "app.log"), os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
 	if err != nil {
-		log.Fatal("Failed to open log file:", err)
+		return nil, nil, fmt.Errorf("failed to open log file: %w", err)
 	}
 
 	// Configure logger to write to both file and console
-	logger = log.New(io.MultiWriter(os.Stdout, logFile), "", log.LstdFlags)
-
-	return logFile
+	return io.MultiWriter(os.Stdout, logFile), func() {
+		_ = logFile.Close()
+	}, nil
 }
