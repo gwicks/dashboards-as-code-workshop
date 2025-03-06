@@ -5,6 +5,8 @@ import (
 	"github.com/grafana/grafana-foundation-sdk/go/common"
 	"github.com/grafana/grafana-foundation-sdk/go/dashboard"
 	"github.com/grafana/grafana-foundation-sdk/go/heatmap"
+	"github.com/grafana/grafana-foundation-sdk/go/logs"
+	"github.com/grafana/grafana-foundation-sdk/go/loki"
 	"github.com/grafana/grafana-foundation-sdk/go/prometheus"
 	"github.com/grafana/grafana-foundation-sdk/go/stat"
 	"github.com/grafana/grafana-foundation-sdk/go/timeseries"
@@ -78,6 +80,14 @@ func heatmapPanel() *heatmap.PanelBuilder {
 		)
 }
 
+func logPanel() *logs.PanelBuilder {
+	return logs.NewPanelBuilder().
+		Datasource(lokiDatasourceRef()).
+		ShowTime(true).
+		SortOrder(common.LogsSortOrderDescending).
+		EnableLogDetails(true)
+}
+
 func prometheusQuery(expression string) *prometheus.DataqueryBuilder {
 	return prometheus.NewDataqueryBuilder().
 		Expr(expression).
@@ -94,9 +104,23 @@ func instantPrometheusQuery(expression string) *prometheus.DataqueryBuilder {
 		LegendFormat("__auto")
 }
 
+func lokiQuery(expression string) *loki.DataqueryBuilder {
+	return loki.NewDataqueryBuilder().
+		Expr(expression).
+		QueryType("range").
+		LegendFormat("__auto")
+}
+
 func prometheusDatasourceRef() dashboard.DataSourceRef {
 	return dashboard.DataSourceRef{
 		Type: cog.ToPtr[string]("prometheus"),
 		Uid:  cog.ToPtr[string]("prometheus"),
+	}
+}
+
+func lokiDatasourceRef() dashboard.DataSourceRef {
+	return dashboard.DataSourceRef{
+		Type: cog.ToPtr[string]("loki"),
+		Uid:  cog.ToPtr[string]("loki"),
 	}
 }

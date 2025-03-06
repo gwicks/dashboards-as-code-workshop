@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/grafana/grafana-foundation-sdk/go/heatmap"
+	"github.com/grafana/grafana-foundation-sdk/go/logs"
 	"github.com/grafana/grafana-foundation-sdk/go/prometheus"
 	"github.com/grafana/grafana-foundation-sdk/go/timeseries"
 )
@@ -25,4 +26,10 @@ func grpcLatenciesHeatmap(service Service) *heatmap.PanelBuilder {
 			Format(prometheus.PromQueryFormatHeatmap),
 		).
 		Datasource(prometheusDatasourceRef())
+}
+
+func grpcLogsPanel(service Service) *logs.PanelBuilder {
+	return logPanel().
+		Title("GRPC Logs").
+		WithTarget(lokiQuery(fmt.Sprintf("{service=\"%s\", source=\"grpc\"}", service.Name)))
 }

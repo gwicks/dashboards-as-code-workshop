@@ -4,6 +4,7 @@ go 1.23.4
 
 require (
 	github.com/caarlos0/env/v11 v11.3.1
+	github.com/go-openapi/strfmt v0.23.0
 	github.com/grafana/grafana-foundation-sdk/go v0.0.0-20250115121653-5f5cd86c0700
 	github.com/grafana/grafana-openapi-client-go v0.0.0-20250108132429-8d7e1f158f65
 )
@@ -19,7 +20,6 @@ require (
 	github.com/go-openapi/loads v0.22.0 // indirect
 	github.com/go-openapi/runtime v0.28.0 // indirect
 	github.com/go-openapi/spec v0.21.0 // indirect
-	github.com/go-openapi/strfmt v0.23.0 // indirect
 	github.com/go-openapi/swag v0.23.0 // indirect
 	github.com/go-openapi/validate v0.24.0 // indirect
 	github.com/google/uuid v1.6.0 // indirect

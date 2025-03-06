@@ -29,7 +29,36 @@ cd ./golang
 grr serve -w -S 'go run *.go' .
 ```
 
+### Install Grizzly
+
 Make sure Grizzly is [installed](https://grafana.github.io/grizzly/installation/), and [configured for the Grafana instance exposed by this stack](https://grafana.github.io/grizzly/configuration/).
+
+**For MacOS (with Homebrew):**
+
+```
+brew install grizzly
+```
+
+**For MacOS (Apple silicon):**
+
+```
+curl -fSL -o "/usr/local/bin/grr" "https://github.com/grafana/grizzly/releases/download/v0.7.1/grr-darwin-arm64"
+chmod +x /usr/local/bin/grr
+```
+
+**For MacOS (Intel chips):**
+
+```
+curl -fSL -o "/usr/local/bin/grr" "https://github.com/grafana/grizzly/releases/download/v0.7.1/grr-darwin-amd64"
+chmod +x /usr/local/bin/grr
+```
+
+**For Linux:**
+
+```
+curl -fSL -o "/usr/local/bin/grr" "https://github.com/grafana/grizzly/releases/download/v0.7.1/grr-linux-amd64"
+chmod +x /usr/local/bin/grr
+```
 
 ## Deploy the dashboards
 

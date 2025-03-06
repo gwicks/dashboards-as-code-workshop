@@ -17,6 +17,27 @@ services:
     volumes:
       - ./config/prometheus.yaml:/etc/prometheus/prometheus.yml
 
+  loki:
+    image: grafana/loki:3.4
+    ports:
+      - '3100:3100'
+    volumes:
+      - ./config/loki.yaml:/etc/loki/loki.yml
+    command: -config.file=/etc/loki/loki.yml
+
+  alloy:
+    image: grafana/alloy:v1.7.1
+    ports:
+      - '12345:12345'
+    volumes:
+      - ./config/alloy.alloy:/etc/alloy/alloy.alloy
+      - tmp-logs:/tmp/app-logs
+    command: run --server.http.listen-addr=0.0.0.0:12345 --storage.path=/var/lib/alloy/data /etc/alloy/alloy.alloy
+    depends_on:
+      - loki
+      - dummy_service
+      - service_catalog
+
   dummy_service:
     build: ./dummy/
     ports:
@@ -25,6 +46,8 @@ services:
       watch:
         - action: rebuild
           path: ./dummy
+    volumes:
+      - tmp-logs:/tmp/app-logs
 
   service_catalog:
     build: ./service-catalog/
@@ -37,3 +60,4 @@ services:
 
 volumes:
   grafana_storage: {}
+  tmp-logs:

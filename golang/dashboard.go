@@ -28,7 +28,8 @@ func dashboardForService(service Service) *dashboard.DashboardBuilder {
 	if service.HasGRPC {
 		builder.WithRow(dashboard.NewRowBuilder("gRPC")).
 			WithPanel(grpcRequestsTimeseries(service).Height(8)).
-			WithPanel(grpcLatenciesHeatmap(service).Height(8))
+			WithPanel(grpcLatenciesHeatmap(service).Height(8)).
+			WithPanel(grpcLogsPanel(service).Height(8))
 	}
 
 	// HTTP row, if relevant
@@ -36,7 +37,9 @@ func dashboardForService(service Service) *dashboard.DashboardBuilder {
 		builder.
 			WithRow(dashboard.NewRowBuilder("HTTP")).
 			WithPanel(httpRequestsTimeseries(service).Height(8)).
-			WithPanel(httpLatenciesHeatmap(service).Height(8))
+			WithPanel(httpLatenciesHeatmap(service).Height(8)).
+			WithPanel(httpLogsPanel(service).Height(8))
+
 	}
 
 	return builder
