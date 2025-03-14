@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/go-openapi/strfmt"
+	"github.com/grafana/grafana-foundation-sdk/go/dashboard"
 	gapi "github.com/grafana/grafana-openapi-client-go/client"
 	"github.com/grafana/grafana-openapi-client-go/client/folders"
 	"github.com/grafana/grafana-openapi-client-go/models"
@@ -18,14 +19,13 @@ func grafanaClient(cfg config) *gapi.GrafanaHTTPAPI {
 		BasePath: "/api",
 		// Schemes are the transfer protocols used by the API (http or https).
 		Schemes: []string{"http"},
-		// BasicAuth is optional basic auth credentials.
-		// TODO: use the SA token from the config instead
-		BasicAuth: url.UserPassword("admin", "admin"),
+		// BasicAuth is contains basic auth credentials.
+		BasicAuth: url.UserPassword(cfg.GrafanaUser, cfg.GrafanaPassword),
 	})
 }
 
 func findOrCreateFolder(gapi *gapi.GrafanaHTTPAPI, folderName string) (string, error) {
-	// TODO: this doesn't handle pagination.
+	// FIXME: this doesn't handle pagination.
 	// It will misbehave if the target Grafana instance has >1000 folders.
 	getParams := folders.NewGetFoldersParams()
 	response, err := gapi.Folders.GetFolders(getParams)
@@ -48,4 +48,14 @@ func findOrCreateFolder(gapi *gapi.GrafanaHTTPAPI, folderName string) (string, e
 	}
 
 	return createResponse.Payload.UID, nil
+}
+
+func persistDashboard(gapi *gapi.GrafanaHTTPAPI, folderUID string, dash dashboard.Dashboard) error {
+	_, err := gapi.Dashboards.PostDashboard(&models.SaveDashboardCommand{
+		FolderUID: folderUID,
+		Dashboard: dash,
+		Overwrite: true,
+	})
+
+	return err
 }

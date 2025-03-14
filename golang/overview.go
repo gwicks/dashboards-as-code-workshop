@@ -26,9 +26,8 @@ func versionStat(service Service) *stat.PanelBuilder {
 }
 
 func descriptionText(service Service) *text.PanelBuilder {
-	return textPanel().
-		Transparent(true).
-		Content(service.Description)
+	return textPanel(service.Description).
+		Transparent(true)
 }
 
 func logsVolumeTimeseries(service Service) *timeseries.PanelBuilder {

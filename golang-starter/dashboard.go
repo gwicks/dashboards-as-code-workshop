@@ -23,27 +23,25 @@ func dashboardForService(service Service) *dashboard.DashboardBuilder {
 		).
 		WithVariable(logLevelsVariable(service))
 
-	// Overview
-	builder.
-		WithPanel(versionStat(service).Height(4).Span(4)).
-		WithPanel(descriptionText(service).Height(4).Span(4)).
-		WithPanel(logsVolumeTimeseries(service).Height(4).Span(16))
+	// TODO: define an "Overview" row with the following panels:
+	// - "Version" panel. Height: 4, Span: 4
+	// - "service description" panel. Height: 4, Span: 4
+	// - "Logs volume" panel. Height: 4, Span: 16
 
 	// gRPC row, if relevant
 	if service.HasGRPC {
-		builder.WithRow(dashboard.NewRowBuilder("gRPC")).
-			WithPanel(grpcRequestsTimeseries(service).Height(8)).
-			WithPanel(grpcLatenciesHeatmap(service).Height(8)).
-			WithPanel(grpcLogsPanel(service).Height(8).Span(24))
+		// TODO: define a "gRPC" row with the following panels:
+		// - "gRPC Requests" panel. Height: 8
+		// - "gRPC Requests latencies" panel. Height: 8
+		// - "GRPC Logs" panel. Height: 8, Span: 24
 	}
 
 	// HTTP row, if relevant
 	if service.HasHTTP {
-		builder.
-			WithRow(dashboard.NewRowBuilder("HTTP")).
-			WithPanel(httpRequestsTimeseries(service).Height(8)).
-			WithPanel(httpLatenciesHeatmap(service).Height(8)).
-			WithPanel(httpLogsPanel(service).Height(8).Span(24))
+		// TODO: define an "HTTP" row with the following panels:
+		// - "HTTP Requests" panel. Height: 8
+		// - "HTTP Requests latencies" panel. Height: 8
+		// - "HTTP Logs" panel. Height: 8, Span: 24
 
 	}
 

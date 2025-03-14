@@ -41,7 +41,7 @@ func main() {
 	}
 
 	// Otherwise, fetch the list services from the catalog and deploy a
-	// dashboard for each of them
+	// dashboard for each of them.
 	if err := fetchServicesAndDeploy(cfg); err != nil {
 		log.Fatal(err)
 	}
