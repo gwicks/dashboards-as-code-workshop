@@ -2,14 +2,14 @@
 	{
 		"name": "users",
 		"description": "Responsible for customer profiles, preferences, ...",
-		"has_http": false,
-		"has_grpc": false,
+		"has_http": true,
+		"has_grpc": true,
 		"github": "https://github.com/org/users"
 	},
 	{
 		"name": "payments",
 		"description": "Handles payments processing",
-		"has_http": false,
+		"has_http": true,
 		"has_grpc": false,
 		"github": "https://github.com/org/payments"
 	},

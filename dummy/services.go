@@ -8,10 +8,58 @@ var services = []Service{
 	{
 		Name:    "users",
 		Version: "v1.2.3",
+		HTTP: []HTTPEndpoint{
+			{
+				Method:  http.MethodPost,
+				Code:    http.StatusOK,
+				Path:    "/api/users/authenticate",
+				Count:   [2]int{2, 7},
+				Latency: [2]int{15, 45},
+			},
+			{
+				Method:  http.MethodPost,
+				Code:    http.StatusUnauthorized,
+				Path:    "/api/users/authenticate",
+				Count:   [2]int{0, 3},
+				Latency: [2]int{10, 25},
+			},
+			{
+				Method:  http.MethodPost,
+				Code:    http.StatusOK,
+				Path:    "/api/users/profile",
+				Count:   [2]int{1, 3},
+				Latency: [2]int{20, 55},
+			},
+		},
+		GRPC: []GRPCEndpoint{
+			{
+				Service: "grpc.UsersService",
+				Method:  "getProfile",
+				Code:    "OK",
+				Count:   [2]int{1, 3},
+				Latency: [2]int{15, 55},
+			},
+		},
 	},
 	{
 		Name:    "payments",
 		Version: "v2.0.1",
+		HTTP: []HTTPEndpoint{
+			{
+				Method:  http.MethodPost,
+				Code:    http.StatusOK,
+				Path:    "/api/payments",
+				Count:   [2]int{0, 5},
+				Latency: [2]int{200, 550},
+			},
+			{
+				Method:  http.MethodPost,
+				Code:    http.StatusTeapot,
+				Path:    "/api/payments",
+				Count:   [2]int{0, 1},
+				Latency: [2]int{42, 42},
+			},
+		},
 	},
 	{
 		Name:    "orders",
