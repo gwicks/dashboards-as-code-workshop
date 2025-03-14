@@ -19,6 +19,23 @@ func dashboardForService(service Service) *dashboard.DashboardBuilder {
 		Link(dashboard.NewDashboardLinkBuilder("GitHub Repository").
 			Url(service.RepositoryURL).
 			TargetBlank(true),
+		).
+		WithVariable(dashboard.NewTextBoxVariableBuilder("logs_filter").
+			Label("Logs filter"),
+		).
+		WithVariable(dashboard.NewQueryVariableBuilder("logs_level").
+			Label("Logs level").
+			Datasource(lokiDatasourceRef()).
+			Query(dashboard.StringOrMap{
+				Map: map[string]any{
+					"label":  "level",
+					"stream": fmt.Sprintf(`{service="%s"}`, service.Name),
+					"type":   1,
+				},
+			}).
+			Refresh(dashboard.VariableRefreshOnTimeRangeChanged).
+			IncludeAll(true).
+			AllValue(".*"),
 		)
 
 	// Overview

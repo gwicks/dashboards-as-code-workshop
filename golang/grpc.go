@@ -31,5 +31,5 @@ func grpcLatenciesHeatmap(service Service) *heatmap.PanelBuilder {
 func grpcLogsPanel(service Service) *logs.PanelBuilder {
 	return logPanel().
 		Title("GRPC Logs").
-		WithTarget(lokiQuery(fmt.Sprintf("{service=\"%s\", source=\"grpc\"}", service.Name)))
+		WithTarget(lokiQuery(fmt.Sprintf("{service=\"%s\", source=\"grpc\", level=~\"$logs_level\"} |~ \"$logs_filter\"", service.Name)))
 }

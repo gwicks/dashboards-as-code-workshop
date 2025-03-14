@@ -31,5 +31,5 @@ func httpLatenciesHeatmap(service Service) *heatmap.PanelBuilder {
 func httpLogsPanel(service Service) *logs.PanelBuilder {
 	return logPanel().
 		Title("HTTP Logs").
-		WithTarget(lokiQuery(fmt.Sprintf("{service=\"%s\", source=\"http\"}", service.Name)))
+		WithTarget(lokiQuery(fmt.Sprintf("{service=\"%s\", source=\"http\", level=~\"$logs_level\"} |~ \"$logs_filter\"", service.Name)))
 }

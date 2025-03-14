@@ -35,7 +35,7 @@ func logsVolumeTimeseries(service Service) *timeseries.PanelBuilder {
 	return timeseriesPanel().
 		Title("Logs volume").
 		WithTarget(
-			lokiQuery(fmt.Sprintf("sum by (level) (count_over_time({service=\"%s\"}[$__auto]))", service.Name)).
+			lokiQuery(fmt.Sprintf("sum by (level) (count_over_time({service=\"%s\", level=~\"$logs_level\"} |~ \"$logs_filter\" [$__auto]))", service.Name)).
 				LegendFormat("{{level}}"),
 		).
 		Stacking(common.NewStackingConfigBuilder().Mode(common.StackingModeNormal)).
