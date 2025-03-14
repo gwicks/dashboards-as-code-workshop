@@ -23,7 +23,8 @@ func dashboardForService(service Service) *dashboard.DashboardBuilder {
 
 	// Overview
 	builder.
-		WithPanel(versionStat(service).Height(4).Span(8)).
+		WithPanel(versionStat(service).Height(4).Span(4)).
+		WithPanel(descriptionText(service).Height(4).Span(4)).
 		WithPanel(logsVolumeTimeseries(service).Height(4).Span(16))
 
 	// gRPC row, if relevant

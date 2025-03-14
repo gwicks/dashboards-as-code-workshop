@@ -6,6 +6,7 @@ import (
 	"github.com/grafana/grafana-foundation-sdk/go/common"
 	"github.com/grafana/grafana-foundation-sdk/go/dashboard"
 	"github.com/grafana/grafana-foundation-sdk/go/stat"
+	"github.com/grafana/grafana-foundation-sdk/go/text"
 	"github.com/grafana/grafana-foundation-sdk/go/timeseries"
 )
 
@@ -22,6 +23,12 @@ func versionStat(service Service) *stat.PanelBuilder {
 			Calcs([]string{"last"}).
 			Fields("/^version$/"),
 		)
+}
+
+func descriptionText(service Service) *text.PanelBuilder {
+	return textPanel().
+		Transparent(true).
+		Content(service.Description)
 }
 
 func logsVolumeTimeseries(service Service) *timeseries.PanelBuilder {

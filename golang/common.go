@@ -9,6 +9,7 @@ import (
 	"github.com/grafana/grafana-foundation-sdk/go/loki"
 	"github.com/grafana/grafana-foundation-sdk/go/prometheus"
 	"github.com/grafana/grafana-foundation-sdk/go/stat"
+	"github.com/grafana/grafana-foundation-sdk/go/text"
 	"github.com/grafana/grafana-foundation-sdk/go/timeseries"
 )
 
@@ -27,6 +28,11 @@ func statPanel() *stat.PanelBuilder {
 				{Value: cog.ToPtr[float64](80), Color: "red"},
 			}),
 		)
+}
+
+func textPanel() *text.PanelBuilder {
+	return text.NewPanelBuilder().
+		Mode(text.TextModeMarkdown)
 }
 
 func timeseriesPanel() *timeseries.PanelBuilder {

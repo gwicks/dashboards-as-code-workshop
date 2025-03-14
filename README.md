@@ -3,7 +3,7 @@
 ## Start the stack
 
 ```console
-docker compose -f docker-compose.yaml up --watch
+docker compose -f docker-compose.yaml up --watch --build
 ```
 
 `--watch` will watch for changes in `./dummy/` and `./service-catalog`, and rebuild+restart the services when needed.

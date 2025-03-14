@@ -7,6 +7,7 @@ import (
 
 type Service struct {
 	Name          string `json:"name"`
+	Description   string `json:"description"`
 	HasHTTP       bool   `json:"has_http"`
 	HasGRPC       bool   `json:"has_grpc"`
 	RepositoryURL string `json:"github"`
