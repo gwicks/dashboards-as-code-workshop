@@ -20,6 +20,19 @@ This mode is meant for development, to be used alongside Grizzly:
 grr serve -w -S 'go run *.go' .
 ```
 
+## Where should I start?
+
+The `main.go` file is the entrypoint both for the development and deployment *modes*.
+
+The `dashboard.go` file defines a `dashboardForService()` function that will
+be called to generate a dashboard for a given service in both cases.
+
+The `common.go` file contains a few utility functions related to panel creations with sensible
+defaults and configuration.
+
+> [!TIP]
+> It is highly recommended that every panel created for your dashboard use one of these utility functions.
+
 ## Deploying the dashboards
 
 ```shell
