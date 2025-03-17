@@ -10,8 +10,19 @@ docker compose -f docker-compose.yaml up --watch --build
 
 The Grafana instance is accessible at `http://localhost:3003` (credentials: `admin` / `admin`)
 
-## Part two
+## Service catalog
 
-Reference implementations for "Part two" live in `./part-two-[language]/`
+The fake service catalog is implemented as a small Go application serving a static JSON file (the catalog)
+over HTTP.
 
-Each folder must contain a readme describes how to deal with dependencies and run the code.
+Code: `./service-catalog`
+
+Catalog endpoint: `http://localhost:8082/api/services`
+
+## Fake services
+
+Fake services are implemented by a single Go application which randomly emits metrics and logs.
+
+Code: `./dummy`
+
+The metrics emitted for each service can somewhat be configured. See the [`./dummy/services.go`](./dummy/services.go) file

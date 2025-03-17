@@ -22,16 +22,19 @@ grr serve -w -S 'go run *.go' .
 
 ## Where should I start?
 
-The `main.go` file is the entrypoint both for the development and deployment *modes*.
+The [`main.go`](./main.go) file is the entrypoint both for the development and
+deployment *modes*.
 
-The `dashboard.go` file defines a `dashboardForService()` function that will
-be called to generate a dashboard for a given service in both cases.
+The [`dashboard.go`](./dashboard.go) file defines a `dashboardForService()`
+function that will be called to generate a dashboard for a given service in
+both cases.
 
-The `common.go` file contains a few utility functions related to panel creations with sensible
-defaults and configuration.
+The [`common.go`](./common.go) file contains a few utility functions related
+to panel creations with sensible defaults and configuration.
 
 > [!TIP]
-> It is highly recommended that every panel created for your dashboard use one of these utility functions.
+> It is highly recommended that every panel created for your dashboard use one
+> of these utility functions.
 
 ## Deploying the dashboards
 
@@ -39,4 +42,5 @@ defaults and configuration.
 go run *.go -deploy
 ```
 
-This will call the service catalog and deploy a dashboard for each service it describes.
+This will call the service catalog and deploy a dashboard for each service it
+describes.
