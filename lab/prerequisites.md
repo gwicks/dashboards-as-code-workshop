@@ -16,7 +16,8 @@ docker compose -f docker-compose.yaml up --build
 ```
 
 > [!NOTE]
-> The Grafana instance is accessible at `http://localhost:3003` (credentials: `admin` / `admin`)
+> The Grafana instance is accessible at [`http://localhost:3003`](http://localhost:3003)
+> Credentials: `admin` / `admin`
 
 ## Install Grizzly
 
@@ -61,7 +62,7 @@ sudo chmod +x /usr/local/bin/grr
 
 ## Configure Grizzly
 
-With Grizzly installed, configure it to connect to the lab's Grafana stack:
+With Grizzly installed, configure it to connect to the lab's Grafana instance:
 
 ```shell
 grr config set grafana.url http://localhost:3003
