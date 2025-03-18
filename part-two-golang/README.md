@@ -17,7 +17,7 @@ It will generate a single dashboard, with a hardcoded service configuration.
 This mode is meant for development, to be used alongside Grizzly:
 
 ```shell
-grr serve -w -S 'go run *.go' .
+grr serve --only-spec --kind Dashboard  -w -S 'go run *.go' .
 ```
 
 ## Where should I start?

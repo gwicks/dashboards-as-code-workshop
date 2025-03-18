@@ -3,34 +3,25 @@
 ## Installing dependencies
 
 ```shell
-go mod tidy
-go mod vendor
+composer install
 ```
 
 ## Running the code
 
 ```shell
-go run *.go
+php index.php
 ```
 
 It will generate a single dashboard, with a hardcoded service configuration.
 This mode is meant for development, to be used alongside Grizzly:
 
 ```shell
-grr serve --only-spec --kind Dashboard  -w -S 'go run *.go' .
+grr serve --only-spec --kind Dashboard -w -S 'php index.php' .
 ```
 
 ## Where should I start?
 
-The [`main.go`](./main.go) file is the entrypoint both for the development and
-deployment *modes*.
-
-The [`dashboard.go`](./dashboard.go) file defines a `dashboardForService()`
-function that will be called to generate a dashboard for a given service in
-both cases.
-
-The [`common.go`](./common.go) file contains a few utility functions related
-to panel creations with sensible defaults and configuration.
+TBD
 
 > [!TIP]
 > It is highly recommended that every panel created for your dashboard use one
@@ -39,7 +30,7 @@ to panel creations with sensible defaults and configuration.
 ## Deploying the dashboards
 
 ```shell
-go run *.go -deploy
+php index.php --deploy
 ```
 
 This will call the service catalog and deploy a dashboard for each service it

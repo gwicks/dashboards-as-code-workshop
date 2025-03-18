@@ -1,0 +1,12 @@
+{
+    "name": "grafana/part-two",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "App\\": "./src"
+        }
+    },
+    "require": {
+        "grafana/foundation-sdk": "dev-v11.4.x+cog-v0.0.x"
+    }
+}

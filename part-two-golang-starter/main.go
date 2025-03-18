@@ -30,9 +30,11 @@ func main() {
 	// dashboard to stdout.
 	if !deploy {
 		service := Service{
-			Name:    "product",
-			HasHTTP: true,
-			HasGRPC: true,
+			Name:          "products",
+			HasHTTP:       true,
+			HasGRPC:       true,
+			Description:   "A service related to products",
+			RepositoryURL: "http://github.com/org/products-service",
 		}
 
 		printDevelopmentDashboard(service)
