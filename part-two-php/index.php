@@ -2,6 +2,7 @@
 
 use App\Catalog;
 use App\Dashboard;
+use App\Grafana;
 
 require_once __DIR__.'/vendor/autoload.php';
 
@@ -19,6 +20,8 @@ if ($help) {
     exit(1);
 }
 
+// By default, assume we're in "development mode" and print a single
+// dashboard to stdout.
 if (!$deploy) {
     $service = new Catalog\Service(
         'products',
@@ -34,3 +37,19 @@ if (!$deploy) {
 
     exit(0);
 }
+
+// Otherwise, fetch the list services from the catalog and deploy a
+// dashboard for each of them
+$grafana = new Grafana\Client(Grafana\Config::fromEnv($_ENV));
+$catalog = new Catalog\Client(Catalog\Config::fromEnv($_ENV));
+$services = $catalog->services();
+
+foreach ($services as $service) {
+    $dashboard = Dashboard\Overview::forService($service);
+    $folderUid = $grafana->findOrCreateFolder($service->name);
+
+    $grafana->persistDashboard($folderUid, $dashboard);
+}
+
+$servicesCount = count($services);
+echo "{$servicesCount} dashboards deployed".PHP_EOL;
