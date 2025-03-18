@@ -23,7 +23,7 @@ func dashboardForService(service Service) *dashboard.DashboardBuilder {
 		).
 		WithVariable(logLevelsVariable(service))
 
-	// TODO: define an "Overview" row with the following panels:
+	// TODO:
 	// - "Version" panel. Height: 4, Span: 4
 	// - "service description" panel. Height: 4, Span: 4
 	// - "Logs volume" panel. Height: 4, Span: 16
