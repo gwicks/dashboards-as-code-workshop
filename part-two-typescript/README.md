@@ -37,7 +37,7 @@ to panel creations with sensible defaults and configuration.
 ## Deploying the dashboards
 
 ```shell
-TBD
+yarn dev --deploy
 ```
 
 This will call the service catalog and deploy a dashboard for each service it
