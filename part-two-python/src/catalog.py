@@ -1,4 +1,4 @@
-import typing
+import os, requests, typing
 
 
 class Service:
@@ -31,3 +31,28 @@ class Service:
             args["repository_url"] = data["github"]        
 
         return cls(**args)
+
+
+class Config:
+    catalog_endpoint: str
+
+    def __init__(self, catalog_endpoint: str = ""):
+        self.catalog_endpoint = catalog_endpoint
+
+
+    @classmethod
+    def from_env(cls) -> typing.Self:
+        return cls(catalog_endpoint=os.environ.get("CATALOG_ENDPOINT", "http://localhost:8082/api/services"))
+
+class Client:
+    config: Config
+
+    def __init__(self, config: Config):
+        self.config = config
+
+    def services(self) -> typing.List[Service]:
+        response = requests.get(self.config.catalog_endpoint)
+        if response.status_code != 200:
+            raise f"could not fetch service catalog: expected 200, got {response.status_code}"
+
+        return [Service.from_json(item) for item in response.json()]
