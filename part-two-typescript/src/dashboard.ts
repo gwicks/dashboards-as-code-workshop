@@ -48,7 +48,7 @@ export const dashboardForService = (service: Service): DashboardBuilder => {
     }
 
 	// HTTP row, if relevant
-    if (service.has_grpc) {
+    if (service.has_http) {
         builder
             .withRow(new RowBuilder('HTTP'))
             .withPanel(httpRequestsTimeseries(service).height(8))

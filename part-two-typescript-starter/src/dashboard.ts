@@ -36,11 +36,11 @@ export const dashboardForService = (service: Service): DashboardBuilder => {
         // TODO: define a "gRPC" row with the following panels:
         // - "gRPC Requests" panel. Height: 8
         // - "gRPC Requests latencies" panel. Height: 8
-        // - "GRPC Logs" panel. Height: 8, Span: 24
+        // - "gRPC Logs" panel. Height: 8, Span: 24
     }
 
 	// HTTP row, if relevant
-    if (service.has_grpc) {
+    if (service.has_http) {
         // TODO: define an "HTTP" row with the following panels:
         // - "HTTP Requests" panel. Height: 8
         // - "HTTP Requests latencies" panel. Height: 8
