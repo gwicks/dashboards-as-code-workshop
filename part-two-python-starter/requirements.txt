@@ -1,0 +1,2 @@
+grafana_foundation_sdk==1740757701!11.4.0
+requests==2.32.3
