@@ -37,8 +37,13 @@ to panel creations with sensible defaults and configuration.
 ## Deploying the dashboards
 
 ```shell
-yarn dev --deploy
+yarn dev --manifests
 ```
 
-This will call the service catalog and deploy a dashboard for each service it
-describes.
+This will call the service catalog and generate a dashboard manifest for each
+service it describes.
+These manifests are written under `./manifests/` and can be deployed from the CLI:
+
+```shell
+grr apply ./manifests
+```

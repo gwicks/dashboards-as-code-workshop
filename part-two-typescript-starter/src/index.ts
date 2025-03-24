@@ -1,6 +1,13 @@
+import fs from 'fs';
+import path from 'path';
+import yaml from 'yaml';
+
 import { Catalog } from './catalog';
 import { dashboardForService } from './dashboard';
 import { Client } from './grafana';
+import { dashboardManifest } from './manifests';
+
+const manifestsDir = './manifests';
 
 const printDevelopmentDashboard = (): void => {
     const service = {
@@ -31,23 +38,56 @@ const fetchServicesAndDeploy = async (): Promise<void> => {
     console.log(`${services.length} dashboards deployed`);
 };
 
+const fetchServicesAndGenerateManifests = async (): Promise<void> => {
+    const grafana = Client.withConfigFromEnv(process.env);
+    const catalog = Catalog.withConfigFromEnv(process.env);
+    const services = await catalog.services();
+
+    if (!fs.existsSync(manifestsDir)) {
+        fs.mkdirSync(manifestsDir);
+    }
+
+    for (const service of services) {
+        const dashboard = dashboardForService(service).build();
+        const folderUid = await grafana.findOrCreateFolder(service.name);
+
+        const manifest = dashboardManifest(folderUid, dashboard);
+        const manifestYaml = yaml.stringify(JSON.parse(JSON.stringify(manifest)));
+
+        const filename = path.join(manifestsDir, `${dashboard.uid!}.yaml`);
+        fs.writeFileSync(filename, manifestYaml);
+    }
+
+    console.log(`${services.length} manifests generated in ${manifestsDir}`);
+};
+
 (async () => {
     const deploy = process.argv.includes('--deploy');
+    const manifests = process.argv.includes('--manifests');
     const help = process.argv.includes('--help') || process.argv.includes('-h');
     
     if (help) {
         console.log('Usage:');
         console.log("\t--deploy\tFetch the list of services from the catalog and deploy a dashboard for each entry");
+        console.log("\t--manifests\tFetch the list of services from the catalog and generate a dashboard manifest for each entry");
         process.exit(1);
     }
     
+    if (deploy) {
+        // Fetch the list services from the catalog and deploy a dashboard for
+        // each of them
+        await fetchServicesAndDeploy();
+        return;
+    }
+    
+    if (manifests) {
+        // Fetch the list services from the catalog and generate a dashboard manifest
+        // for each of them.
+        await fetchServicesAndGenerateManifests();
+        return;
+    }
+
     // By default, assume we're in "development mode" and print a single
     // dashboard to stdout.
-    if (!deploy) {
-        printDevelopmentDashboard();
-    } else {
-        // Otherwise, fetch the list services from the catalog and deploy a
-        // dashboard for each of them
-        await fetchServicesAndDeploy();
-    }
+    printDevelopmentDashboard();
 })();
