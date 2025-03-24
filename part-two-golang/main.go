@@ -5,8 +5,11 @@ import (
 	"flag"
 	"fmt"
 	"log"
+	"os"
+	"path/filepath"
 
 	"github.com/caarlos0/env/v11"
+	"github.com/goccy/go-yaml"
 )
 
 type config struct {
@@ -23,30 +26,77 @@ func main() {
 	}
 
 	deploy := false
-	flag.BoolVar(&deploy, "deploy", false, "Fetch the list of services from the catalog and deploy a dashboard for each entry")
+	manifests := false
+	manifestsDirectory := "./manifests"
+	flag.BoolVar(&deploy, "deploy", deploy, "Fetch the list of services from the catalog and deploy a dashboard for each entry")
+	flag.BoolVar(&manifests, "manifests", manifests, "Fetch the list of services from the catalog and generate a dashboard manifest for each entry")
+	flag.StringVar(&manifestsDirectory, "manifests-directory", manifestsDirectory, "Directory in which the manifests will be generated")
 	flag.Parse()
 
-	// By default, assume we're in "development mode" and print a single
-	// dashboard to stdout.
-	if !deploy {
-		service := Service{
-			Name:          "products",
-			HasHTTP:       true,
-			HasGRPC:       true,
-			Description:   "A service related to products",
-			RepositoryURL: "http://github.com/org/products-service",
+	// Fetch the list services from the catalog and generate a dashboard
+	// manifest for each of them.
+	if manifests {
+		if err := fetchServicesAndGenerateManifests(cfg, manifestsDirectory); err != nil {
+			log.Fatal(err)
 		}
-
-		printDevelopmentDashboard(service)
-
 		return
 	}
 
-	// Otherwise, fetch the list services from the catalog and deploy a
-	// dashboard for each of them
-	if err := fetchServicesAndDeploy(cfg); err != nil {
-		log.Fatal(err)
+	// Fetch the list services from the catalog and deploy a dashboard for each
+	// of them.
+	if deploy {
+		if err := fetchServicesAndDeploy(cfg); err != nil {
+			log.Fatal(err)
+		}
+		return
 	}
+
+	service := Service{
+		Name:          "products",
+		HasHTTP:       true,
+		HasGRPC:       true,
+		Description:   "A service related to products",
+		RepositoryURL: "http://github.com/org/products-service",
+	}
+
+	printDevelopmentDashboard(service)
+}
+
+func fetchServicesAndGenerateManifests(cfg config, outputDir string) error {
+	client := grafanaClient(cfg)
+	services, err := fetchServices(cfg)
+	if err != nil {
+		return err
+	}
+
+	if err := os.MkdirAll(outputDir, 0777); err != nil {
+		return err
+	}
+
+	for _, service := range services {
+		folderUid, err := findOrCreateFolder(client, service.Name)
+		if err != nil {
+			return err
+		}
+
+		serviceDashboard, err := dashboardForService(service).Build()
+		if err != nil {
+			return err
+		}
+
+		manifest := DashboardManifestFrom(folderUid, serviceDashboard)
+		manifestYaml, err := yaml.MarshalWithOptions(manifest, yaml.UseJSONMarshaler())
+		if err != nil {
+			return err
+		}
+
+		filename := *serviceDashboard.Uid + ".yaml"
+		if err := os.WriteFile(filepath.Join(outputDir, filename), manifestYaml, 0666); err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
 
 func fetchServicesAndDeploy(cfg config) error {
