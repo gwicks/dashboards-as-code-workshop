@@ -1,10 +1,15 @@
-import argparse, sys
+import argparse, os, sys, yaml
 
 from grafana_foundation_sdk.cog.encoder import JSONEncoder
 
 from src.catalog import Config as CatalogConfig, Client as Catalog, Service
-from src.grafana import Config as GrafanaConfig, Client as Grafana
 from src.dashboard import dashboard_for_service
+from src.grafana import Config as GrafanaConfig, Client as Grafana
+from src.manifests import Manifest
+
+
+MANIFESTS_DIR = './manifests'
+
 
 def print_development_dashboard():
     service = Service(
@@ -31,15 +36,45 @@ def fetch_services_and_deploy():
     
     print(f"{len(services)} dashboards deployed")
 
+def fetch_services_and_generate_manifests():
+    catalog = Catalog(CatalogConfig.from_env())
+    grafana = Grafana(GrafanaConfig.from_env())
+    services = catalog.services()
+
+    if not os.path.exists(MANIFESTS_DIR):
+        os.mkdir(MANIFESTS_DIR)
+
+    for service in services:
+        dashboard = dashboard_for_service(service).build()
+        folder_uid = grafana.find_or_create_folder(service.name)
+
+        manifest = Manifest.dashboard(folder_uid, dashboard)
+
+        filepath = os.path.join(MANIFESTS_DIR, f"{dashboard.uid}.yaml")
+        with open(filepath, "w") as file:
+            file.write(yaml.dump(manifest.as_data()))
+    
+    print(f"{len(services)} manifests generated in {MANIFESTS_DIR}")
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(prog='part-two')
     parser.add_argument('--deploy', action='store_true', help='Fetch the list of services from the catalog and deploy a dashboard for each entry')
+    parser.add_argument('--manifests', action='store_true', help='Fetch the list of services from the catalog and generate a dashboard manifest for each entry')
 
     args = parser.parse_args()
 
-    if not args.deploy:
-        print_development_dashboard()
+    # Fetch the list services from the catalog and deploy a dashboard for each
+    # of them.
+    if args.deploy:
+        fetch_services_and_deploy()
         sys.exit(0)
 
-    fetch_services_and_deploy()
+    # Fetch the list services from the catalog and generate a dashboard manifest
+    # for each of them.
+    if args.manifests:
+        fetch_services_and_generate_manifests()
+        sys.exit(0)
+
+    # Assume we're in "development mode" and print a single dashboard to stdout
+    print_development_dashboard()

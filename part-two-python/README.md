@@ -39,8 +39,14 @@ to panel creations with sensible defaults and configuration.
 ## Deploying the dashboards
 
 ```shell
-python main.py --deploy
+python main.py --manifests
 ```
 
-This will call the service catalog and deploy a dashboard for each service it
-describes.
+This will call the service catalog and generate a dashboard manifest for each
+service it describes.
+These manifests are written under `./manifests/` by default and can be deployed
+from the CLI:
+
+```shell
+grr apply ./manifests
+```

@@ -1,2 +1,3 @@
 /.venv
+/manifests
 __pycache__
