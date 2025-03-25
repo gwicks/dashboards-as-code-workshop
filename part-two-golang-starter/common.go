@@ -18,20 +18,7 @@ import (
 
 // statPanel creates a pre-configured stat panel.
 func statPanel() *stat.PanelBuilder {
-	return stat.NewPanelBuilder().
-		ColorScheme(dashboard.NewFieldColorBuilder().Mode(dashboard.FieldColorModeIdThresholds)).
-		GraphMode(common.BigValueGraphModeArea).
-		ColorMode(common.BigValueColorModeValue).
-		JustifyMode(common.BigValueJustifyModeAuto).
-		TextMode(common.BigValueTextModeAuto).
-		Orientation(common.VizOrientationAuto).
-		Thresholds(dashboard.NewThresholdsConfigBuilder().
-			Mode("absolute").
-			Steps([]dashboard.Threshold{
-				{Color: "green"},
-				{Value: cog.ToPtr[float64](80), Color: "red"},
-			}),
-		)
+	return stat.NewPanelBuilder()
 }
 
 // textPanel creates a text panel pre-configured for markdown content.
@@ -44,54 +31,28 @@ func textPanel(content string) *text.PanelBuilder {
 // timeseriesPanel creates a pre-configured timeseries panel.
 func timeseriesPanel() *timeseries.PanelBuilder {
 	return timeseries.NewPanelBuilder().
-		LineWidth(1).
-		PointSize(5).
 		FillOpacity(20).
 		GradientMode(common.GraphGradientModeOpacity).
 		Legend(common.NewVizLegendOptionsBuilder().
 			DisplayMode(common.LegendDisplayModeList).
 			Placement(common.LegendPlacementBottom).
 			ShowLegend(true),
-		).
-		Tooltip(common.NewVizTooltipOptionsBuilder().
-			Mode(common.TooltipDisplayModeSingle).
-			Sort(common.SortOrderNone),
-		).
-		ColorScheme(dashboard.NewFieldColorBuilder().Mode(dashboard.FieldColorModeIdPaletteClassic)).
-		ThresholdsStyle(common.NewGraphThresholdsStyleConfigBuilder().Mode(common.GraphThresholdsStyleModeOff))
+		)
 }
 
 // heatmapPanel creates a pre-configured heatmap panel.
 func heatmapPanel() *heatmap.PanelBuilder {
 	return heatmap.NewPanelBuilder().
 		Color(heatmap.NewHeatmapColorOptionsBuilder().
-			Mode("scheme").
+			Mode(heatmap.HeatmapColorModeScheme).
 			Scheme("RdYlBu").
-			Fill("dark-orange").
-			Scale("exponential").
-			Exponent(0.5).
-			Steps(0x40).
-			Reverse(false),
+			Scale(heatmap.HeatmapColorScaleExponential).
+			Steps(64),
 		).
 		FilterValues(heatmap.NewFilterValueRangeBuilder().Le(1e-09)).
-		RowsFrame(heatmap.NewRowsHeatmapOptionsBuilder().Layout("auto")).
-		ShowValue("").
-		CellValues(heatmap.NewCellValuesBuilder()).
-		YAxis(heatmap.NewYAxisConfigBuilder().
-			Unit("s").
-			Reverse(false).
-			AxisPlacement("left"),
-		).
-		ShowLegend().
-		Mode("single").
-		HideYHistogram().
-		ShowColorScale(true).
-		ScaleDistribution(common.NewScaleDistributionConfigBuilder().Type("linear")).
-		HideFrom(common.NewHideSeriesConfigBuilder().
-			Tooltip(false).
-			Legend(false).
-			Viz(false),
-		)
+		YAxis(heatmap.NewYAxisConfigBuilder().Unit("s")).
+		Mode(common.TooltipDisplayModeSingle).
+		ScaleDistribution(common.NewScaleDistributionConfigBuilder().Type("linear"))
 }
 
 // logPanel creates a pre-configured logs panel.
@@ -134,8 +95,8 @@ func lokiQuery(expression string) *loki.DataqueryBuilder {
 // used by the workshop stack.
 func prometheusDatasourceRef() dashboard.DataSourceRef {
 	return dashboard.DataSourceRef{
-		Type: cog.ToPtr[string]("prometheus"),
-		Uid:  cog.ToPtr[string]("prometheus"),
+		Type: cog.ToPtr("prometheus"),
+		Uid:  cog.ToPtr("prometheus"),
 	}
 }
 
@@ -143,7 +104,7 @@ func prometheusDatasourceRef() dashboard.DataSourceRef {
 // workshop stack.
 func lokiDatasourceRef() dashboard.DataSourceRef {
 	return dashboard.DataSourceRef{
-		Type: cog.ToPtr[string]("loki"),
-		Uid:  cog.ToPtr[string]("loki"),
+		Type: cog.ToPtr("loki"),
+		Uid:  cog.ToPtr("loki"),
 	}
 }
