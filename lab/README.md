@@ -1,7 +1,11 @@
 # Hands-on lab: Grafana as code
 
 1. [Prerequisites](./prerequisites.md)
-2. [Part one: **TODO** first dashboard as code](./part-one.md)
+2. [Part one: first dashboard as code](./part-one.md)
+   1. [The objective](./part-one.md#the-objective)
+   2. [What's provided](./part-one.md#whats-provided)
+   3. [Guidelines](./part-one.md#guidelines)
+   4. [Deploying](./part-one.md#deploying)
 3. [Part two: generating and deploying dashboards for a service catalog](./part-two.md)
    1. [The objective](./part-two.md#the-objective)
    2. [What's provided](./part-two.md#whats-provided)

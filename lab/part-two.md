@@ -43,7 +43,7 @@ README.
 > ```
 
 A [live example of the desired dashboard](
-http://localhost:3003/d/example-products-overview/example-products-service-overview)
+http://localhost:3003/d/example-products-overview/part-two-products-service-overview)
 is provisioned in Grafana.
 
 > [!TIP]
@@ -120,7 +120,7 @@ Recommendations:
 
 ## Deploying
 
-TBD
+Instructions on deploying the dashboards are included in each skeleton's README.
 
 ## Next steps
 
