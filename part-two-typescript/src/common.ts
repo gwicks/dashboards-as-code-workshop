@@ -1,10 +1,4 @@
-import {
-    DataSourceRef,
-    FieldColorBuilder,
-    FieldColorModeId,
-    ThresholdsConfigBuilder,
-    ThresholdsMode,
-} from '@grafana/grafana-foundation-sdk/dashboard';
+import { DataSourceRef } from '@grafana/grafana-foundation-sdk/dashboard';
 import * as common from '@grafana/grafana-foundation-sdk/common';
 import * as heatmap from '@grafana/grafana-foundation-sdk/heatmap';
 import * as logs from '@grafana/grafana-foundation-sdk/logs';
@@ -19,22 +13,7 @@ import * as timeseries from '@grafana/grafana-foundation-sdk/timeseries';
 
 // Creates a pre-configured stat panel.
 export const statPanel = (): stat.PanelBuilder => {
-    return new stat.PanelBuilder()
-        .colorScheme(new FieldColorBuilder().mode(FieldColorModeId.Thresholds))
-        .graphMode(common.BigValueGraphMode.Area)
-        .colorMode(common.BigValueColorMode.Value)
-        .justifyMode(common.BigValueJustifyMode.Auto)
-        .textMode(common.BigValueTextMode.Auto)
-        .orientation(common.VizOrientation.Auto)
-        .thresholds(
-            new ThresholdsConfigBuilder()
-                .mode(ThresholdsMode.Absolute)
-                .steps([
-                    {value: null, color: 'green'},
-                    {value: 80, color: 'red'},
-                ])
-        )
-    ;
+    return new stat.PanelBuilder();
 };
 
 // Creates a text panel pre-configured for markdown content.
@@ -48,8 +27,6 @@ export const textPanel = (content: string): text.PanelBuilder => {
 // Creates a pre-configured timeseries panel.
 export const timeseriesPanel = (): timeseries.PanelBuilder => {
     return new timeseries.PanelBuilder()
-        .lineWidth(1)
-        .pointSize(5)
         .fillOpacity(20)
         .gradientMode(common.GraphGradientMode.Opacity)
         .legend(
@@ -57,16 +34,6 @@ export const timeseriesPanel = (): timeseries.PanelBuilder => {
                 .displayMode(common.LegendDisplayMode.List)
                 .placement(common.LegendPlacement.Bottom)
                 .showLegend(true)
-        )
-        .tooltip(
-            new common.VizTooltipOptionsBuilder()
-                .mode(common.TooltipDisplayMode.Single)
-                .sort(common.SortOrder.None)
-        )
-        .colorScheme(new FieldColorBuilder().mode(FieldColorModeId.PaletteClassic))
-        .thresholdsStyle(
-            new common.GraphThresholdsStyleConfigBuilder()
-                .mode(common.GraphThresholdsStyleMode.Off)
         )
     ;
 };
@@ -78,35 +45,15 @@ export const heatmapPanel = (): heatmap.PanelBuilder => {
             new heatmap.HeatmapColorOptionsBuilder()
                 .mode(heatmap.HeatmapColorMode.Scheme)
                 .scheme('RdYlBu')
-                .fill('dark-orange')
                 .scale(heatmap.HeatmapColorScale.Exponential)
-                .exponent(0.5)
                 .steps(64)
-                .reverse(false)
         )
         .filterValues(new heatmap.FilterValueRangeBuilder().le(1e-09))
-        .rowsFrame(new heatmap.RowsHeatmapOptionsBuilder().layout(common.HeatmapCellLayout.Auto))
-        .showValue(common.VisibilityMode.Auto)
-        .cellValues(new heatmap.CellValuesBuilder())
-        .yAxis(
-            new heatmap.YAxisConfigBuilder()
-                .unit('s')
-                .reverse(false)
-                .axisPlacement(common.AxisPlacement.Left)
-        )
-        .showLegend()
+        .yAxis(new heatmap.YAxisConfigBuilder().unit('s'))
         .mode(common.TooltipDisplayMode.Single)
-        .hideYHistogram()
-        .showColorScale(true)
         .scaleDistribution(
             new common.ScaleDistributionConfigBuilder()
                 .type(common.ScaleDistribution.Linear)
-        )
-        .hideFrom(
-            new common.HideSeriesConfigBuilder()
-                .tooltip(false)
-                .legend(false)
-                .viz(false)
         )
     ;
 };
