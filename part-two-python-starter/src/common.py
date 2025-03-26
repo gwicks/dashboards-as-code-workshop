@@ -1,27 +1,13 @@
-from grafana_foundation_sdk.builders import common, dashboard, heatmap, logs, loki, prometheus, stat, text, timeseries
+from grafana_foundation_sdk.builders import common, heatmap, logs, loki, prometheus, stat, text, timeseries
 from grafana_foundation_sdk.models.common import (
-    BigValueGraphMode,
-    BigValueColorMode,
-    BigValueJustifyMode,
-    BigValueTextMode,
-    VizOrientation,
     LogsSortOrder,
     GraphGradientMode,
     LegendDisplayMode,
     LegendPlacement,
     TooltipDisplayMode,
-    SortOrder,
-    GraphThresholdsStyleMode,
-    HeatmapCellLayout,
-    AxisPlacement,
     ScaleDistribution,
 )
-from grafana_foundation_sdk.models.dashboard import (
-    DataSourceRef,
-    FieldColorModeId,
-    ThresholdsMode,
-    Threshold,
-)
+from grafana_foundation_sdk.models.dashboard import DataSourceRef
 from grafana_foundation_sdk.models.heatmap import (
     HeatmapColorMode,
     HeatmapColorScale,
@@ -51,23 +37,7 @@ def stat_panel() -> stat.Panel:
     """
     Creates a pre-configured stat panel.
     """
-    return (
-        stat.Panel()
-        .color_scheme(dashboard.FieldColor().mode(FieldColorModeId.THRESHOLDS))
-        .graph_mode(BigValueGraphMode.AREA)
-        .color_mode(BigValueColorMode.VALUE)
-        .justify_mode(BigValueJustifyMode.AUTO)
-        .text_mode(BigValueTextMode.AUTO)
-        .orientation(VizOrientation.AUTO)
-        .thresholds(
-            dashboard.ThresholdsConfig()
-            .mode(ThresholdsMode.ABSOLUTE)
-            .steps([
-                Threshold(color="green"),
-                Threshold(color="red", value=80),
-            ])
-        )
-    )
+    return stat.Panel()
 
 def text_panel(content: str) -> text.Panel:
     """
@@ -85,8 +55,6 @@ def timeseries_panel() -> timeseries.Panel:
     """
     return (
         timeseries.Panel()
-        .line_width(1)
-        .point_size(5)
         .fill_opacity(20)
         .gradient_mode(GraphGradientMode.OPACITY)
         .legend(
@@ -94,19 +62,6 @@ def timeseries_panel() -> timeseries.Panel:
             .display_mode(LegendDisplayMode.LIST)
             .placement(LegendPlacement.BOTTOM)
             .show_legend(True)
-        )
-        .tooltip(
-            common.VizTooltipOptions()
-            .mode(TooltipDisplayMode.SINGLE)
-            .sort(SortOrder.NONE)
-        )
-        .color_scheme(
-            dashboard.FieldColor()
-            .mode(FieldColorModeId.PALETTE_CLASSIC)
-        )
-        .thresholds_style(
-            common.GraphThresholdsStyleConfig()
-            .mode(GraphThresholdsStyleMode.OFF)
         )
     )
 
@@ -120,31 +75,13 @@ def heatmap_panel() -> timeseries.Panel:
             heatmap.HeatmapColorOptions()
             .mode(HeatmapColorMode.SCHEME)
             .scheme("RdYlBu")
-            .fill("dark-orange")
             .scale(HeatmapColorScale.EXPONENTIAL)
-            .exponent(0.5)
             .steps(64)
-            .reverse(False)
         )
         .filter_values(heatmap.FilterValueRange().le(1e-09))
-        .rows_frame(heatmap.RowsHeatmapOptions().layout(HeatmapCellLayout.AUTO))
-        .y_axis(
-            heatmap.YAxisConfig()
-            .unit("s")
-            .reverse(False)
-            .axis_placement(AxisPlacement.LEFT)
-        )
-        .show_legend()
+        .y_axis(heatmap.YAxisConfig().unit("s"))
         .mode(TooltipDisplayMode.SINGLE)
-        .hide_y_histogram()
-        .show_color_scale(True)
         .scale_distribution(common.ScaleDistributionConfig().type_val(ScaleDistribution.LINEAR))
-        .hide_from(
-            common.HideSeriesConfig()
-            .tooltip(False)
-            .legend(False)
-            .viz(False)
-        )
     )
 
 
