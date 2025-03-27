@@ -9,7 +9,25 @@ For the purposes of this workshop, an entire stack is provided with:
 
 To run it, you will need [Docker](https://docs.docker.com/engine/) and [Docker Compose](https://docs.docker.com/compose/).
 
-## Start the stack
+## Forking the Lab Repository
+
+In order to ensure you can work with the lab and experiment freely, it is recommended that you fork this repository.
+
+## Working with the Lab Repository (Local)
+
+In order to run the lab locally on your development machine you will need to clone your forked repository:
+
+```shell
+git clone https://github.com/<your_username>/dashboards-as-code-workshop
+```
+
+Once done, change into the repository directory:
+
+```shell
+cd dashboards-as-code-workshop
+```
+
+Then start the stack using Docker:
 
 ```shell
 docker compose -f docker-compose.yaml up --build
@@ -18,6 +36,32 @@ docker compose -f docker-compose.yaml up --build
 > [!NOTE]
 > The Grafana instance is accessible at [`http://localhost:3003`](http://localhost:3003)
 > Credentials: `admin` / `admin`
+
+## Working with the Lab Repository (CodeSandbox.io)
+
+If you are unable to run the workshop locally on your machine, you can use [CodeSandbox.io](https://codesandbox.io), a browser-based virtual development environment.
+
+- First, sign up for a free CodeSandbox account and login.
+
+- Once done, click on **Import** at the top right to begin importing the GitHub repository.
+
+- Click on **Find by URL** and enter the URL of your *forked repository*.
+
+- Click on the title of your repository to open it in a new code sandbox environment.
+
+Once you've opened the repository in CodeSandbox, you can start the stack by:
+
+- Clicking on **Create Terminal** undernearth the **Shared Terminals** section in the left side panel.
+
+- In the Terminal that opens, run the following:
+
+```shell
+docker compose -f docker-compose.yaml up --build
+```
+
+You can verify that Grafana is up and running by clicking **Open Externally** on the popup that appears which says "Port 3003 has been opened".
+
+The rest of the instructions in these docs should work the same within the CodeSandbox.io environment.
 
 ## Install Grizzly
 
