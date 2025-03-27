@@ -3,32 +3,31 @@
 ## Installing dependencies
 
 ```shell
-go mod tidy
-go mod vendor
+composer install
 ```
 
 ## Running the code
 
 ```shell
-go run *.go
+php index.php
 ```
 
-It will generate a single dashboard and print its representation to stdout.
+It will generate a single dashboard, with a hardcoded service configuration.
 This mode is meant for development, to be used alongside Grizzly:
 
 ```shell
-grr serve --only-spec --kind Dashboard  -w -S 'go run *.go' .
+grr serve --only-spec --kind Dashboard -w -S 'php index.php' .
 ```
 
 ## Where should I start?
 
-The [`main.go`](./main.go) file is the entrypoint both for the development and
+The [`index.php`](./index.php) file is the entrypoint both for the development and
 deployment *modes*.
 
-The [`dashboard.go`](./dashboard.go) file defines a `testDashboard()`
-function that will be called to generate the dashboard.
+The [`./src/Dashboard/Playground.php`](./src/Dashboard/Playground.php) file defines a `Playground::create()`
+static method that will be called to generate the dashboard.
 
-The [`common.go`](./common.go) file is where "base functions" for each panel type should be defined
+The [`./src/Dashboard/Common.php`](./src/Dashboard/Common.php) file is where "base functions" for each panel type should be defined.
 
 > [!TIP]
 > It is highly recommended that every panel created for your dashboard use one
@@ -37,7 +36,7 @@ The [`common.go`](./common.go) file is where "base functions" for each panel typ
 ## Deploying the dashboards
 
 ```shell
-go run *.go -manifests
+php index.php --manifests
 ```
 
 This will generate a YAML manifest for the test dashboard.

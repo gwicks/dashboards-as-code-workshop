@@ -28,8 +28,7 @@ deployment *modes*.
 The [`dashboard.go`](./dashboard.go) file defines a `testDashboard()`
 function that will be called to generate the dashboard.
 
-The [`common.go`](./common.go) file contains a few utility functions related
-to panel creations with sensible defaults and configuration.
+The [`common.go`](./common.go) file is where "base functions" for each panel type should be defined
 
 > [!TIP]
 > It is highly recommended that every panel created for your dashboard use one
