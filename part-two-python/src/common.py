@@ -65,7 +65,7 @@ def timeseries_panel() -> timeseries.Panel:
         )
     )
 
-def heatmap_panel() -> timeseries.Panel:
+def heatmap_panel() -> heatmap.Panel:
     """
     Creates a pre-configured heatmap panel.
     """

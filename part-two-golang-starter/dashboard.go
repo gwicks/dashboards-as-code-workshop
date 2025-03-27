@@ -29,21 +29,16 @@ func dashboardForService(service Service) *dashboard.DashboardBuilder {
 	// - "Logs volume" panel. Height: 4, Span: 16
 
 	// gRPC row, if relevant
-	if service.HasGRPC {
-		// TODO: define a "gRPC" row with the following panels:
-		// - "gRPC Requests" panel. Height: 8
-		// - "gRPC Requests latencies" panel. Height: 8
-		// - "GRPC Logs" panel. Height: 8, Span: 24
-	}
+	// TODO: define a "gRPC" row with the following panels:
+	// - "gRPC Requests" panel. Height: 8
+	// - "gRPC Requests latencies" panel. Height: 8
+	// - "GRPC Logs" panel. Height: 8, Span: 24
 
 	// HTTP row, if relevant
-	if service.HasHTTP {
-		// TODO: define an "HTTP" row with the following panels:
-		// - "HTTP Requests" panel. Height: 8
-		// - "HTTP Requests latencies" panel. Height: 8
-		// - "HTTP Logs" panel. Height: 8, Span: 24
-
-	}
+	// TODO: define an "HTTP" row with the following panels:
+	// - "HTTP Requests" panel. Height: 8
+	// - "HTTP Requests latencies" panel. Height: 8
+	// - "HTTP Logs" panel. Height: 8, Span: 24
 
 	return builder
 }

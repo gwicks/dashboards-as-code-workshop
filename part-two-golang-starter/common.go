@@ -23,21 +23,20 @@ func statPanel() *stat.PanelBuilder {
 
 // textPanel creates a text panel pre-configured for markdown content.
 func textPanel(content string) *text.PanelBuilder {
-	return text.NewPanelBuilder().
-		Mode(text.TextModeMarkdown).
-		Content(content)
+	return text.NewPanelBuilder()
+	// TODO: configure default options for text panels
 }
 
 // timeseriesPanel creates a pre-configured timeseries panel.
 func timeseriesPanel() *timeseries.PanelBuilder {
-	return timeseries.NewPanelBuilder().
-		FillOpacity(20).
-		GradientMode(common.GraphGradientModeOpacity).
-		Legend(common.NewVizLegendOptionsBuilder().
-			DisplayMode(common.LegendDisplayModeList).
-			Placement(common.LegendPlacementBottom).
-			ShowLegend(true),
-		)
+	return timeseries.NewPanelBuilder()
+	// TODO: configure default options for timeseries panels
+}
+
+// logPanel creates a pre-configured logs panel.
+func logPanel() *logs.PanelBuilder {
+	return logs.NewPanelBuilder()
+	// TODO: configure default options for logs panels
 }
 
 // heatmapPanel creates a pre-configured heatmap panel.
@@ -53,15 +52,6 @@ func heatmapPanel() *heatmap.PanelBuilder {
 		YAxis(heatmap.NewYAxisConfigBuilder().Unit("s")).
 		Mode(common.TooltipDisplayModeSingle).
 		ScaleDistribution(common.NewScaleDistributionConfigBuilder().Type("linear"))
-}
-
-// logPanel creates a pre-configured logs panel.
-func logPanel() *logs.PanelBuilder {
-	return logs.NewPanelBuilder().
-		Datasource(lokiDatasourceRef()).
-		ShowTime(true).
-		SortOrder(common.LogsSortOrderDescending).
-		EnableLogDetails(true)
 }
 
 // prometheusQuery creates a Prometheus query pre-configured for range vectors.

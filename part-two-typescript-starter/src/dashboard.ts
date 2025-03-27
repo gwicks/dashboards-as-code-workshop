@@ -32,20 +32,16 @@ export const dashboardForService = (service: Service): DashboardBuilder => {
     // - "Logs volume" panel. Height: 4, Span: 16
 
 	// gRPC row, if relevant
-    if (service.has_grpc) {
-        // TODO: define a "gRPC" row with the following panels:
-        // - "gRPC Requests" panel. Height: 8
-        // - "gRPC Requests latencies" panel. Height: 8
-        // - "gRPC Logs" panel. Height: 8, Span: 24
-    }
+    // TODO: define a "gRPC" row with the following panels:
+    // - "gRPC Requests" panel. Height: 8
+    // - "gRPC Requests latencies" panel. Height: 8
+    // - "gRPC Logs" panel. Height: 8, Span: 24
 
 	// HTTP row, if relevant
-    if (service.has_http) {
-        // TODO: define an "HTTP" row with the following panels:
-        // - "HTTP Requests" panel. Height: 8
-        // - "HTTP Requests latencies" panel. Height: 8
-        // - "HTTP Logs" panel. Height: 8, Span: 24
-    }
+    // TODO: define an "HTTP" row with the following panels:
+    // - "HTTP Requests" panel. Height: 8
+    // - "HTTP Requests latencies" panel. Height: 8
+    // - "HTTP Logs" panel. Height: 8, Span: 24
 
     return builder;
 };

@@ -34,20 +34,16 @@ def dashboard_for_service(service: Service) -> dashboard.Dashboard:
     # - "Logs volume" panel. Height: 4, Span: 16
 
     # gRPC row, if relevant
-    if service.has_grpc:
-        pass
-        # TODO: define a "gRPC" row with the following panels:
-        # - "gRPC Requests" panel. Height: 8
-        # - "gRPC Requests latencies" panel. Height: 8
-        # - "GRPC Logs" panel. Height: 8, Span: 24
+    # TODO: define a "gRPC" row with the following panels:
+    # - "gRPC Requests" panel. Height: 8
+    # - "gRPC Requests latencies" panel. Height: 8
+    # - "GRPC Logs" panel. Height: 8, Span: 24
 
     # HTTP row, if relevant
-    if service.has_http:
-        pass
-        # TODO: define an "HTTP" row with the following panels:
-        # - "HTTP Requests" panel. Height: 8
-        # - "HTTP Requests latencies" panel. Height: 8
-        # - "HTTP Logs" panel. Height: 8, Span: 24
+    # TODO: define an "HTTP" row with the following panels:
+    # - "HTTP Requests" panel. Height: 8
+    # - "HTTP Requests latencies" panel. Height: 8
+    # - "HTTP Logs" panel. Height: 8, Span: 24
 
     return builder
 
