@@ -3,32 +3,33 @@
 ## Installing dependencies
 
 ```shell
-go mod tidy
-go mod vendor
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
 ```
 
 ## Running the code
 
 ```shell
-go run *.go
+python main.py
 ```
 
-It will generate a single dashboard and print its representation to stdout.
+It will generate a single dashboard, with a hardcoded service configuration.
 This mode is meant for development, to be used alongside Grizzly:
 
 ```shell
-grr serve --only-spec --kind Dashboard  -w -S 'go run *.go' .
+grr serve --only-spec --kind Dashboard -w -S 'python main.py' .
 ```
 
 ## Where should I start?
 
-The [`main.go`](./main.go) file is the entrypoint both for the development and
+The [`main.py`](./main.py) file is the entrypoint both for the development and
 deployment *modes*.
 
-The [`dashboard.go`](./dashboard.go) file defines a `testDashboard()`
+The [`./src/dashboard.py`](./src/dashboard.py) file defines a `example_dashboard()`
 function that will be called to generate the dashboard.
 
-The [`common.go`](./common.go) file is where "base functions" for each panel type should be defined.
+The [`./src/common.py`](./src/common.py) file is where "base functions" for each panel type should be defined.
 
 > [!TIP]
 > It is highly recommended that every panel created for your dashboard use one
@@ -37,7 +38,7 @@ The [`common.go`](./common.go) file is where "base functions" for each panel typ
 ## Deploying the dashboards
 
 ```shell
-go run *.go -manifests
+python main.py --manifests
 ```
 
 This will generate a YAML manifest for the test dashboard.
