@@ -9,6 +9,28 @@ For the purposes of this workshop, an entire stack is provided with:
 
 To run it, you will need [Docker](https://docs.docker.com/engine/) and [Docker Compose](https://docs.docker.com/compose/).
 
+## Important: Authenticating to Docker Hub
+
+Before going forward with the prerequisites, and to ensure everyone can go through them,
+check that you are authenticated to Docker.
+
+<details>
+    <summary><b>For Docker Desktop</b></summary>
+
+> If you are using Docker Desktop, you can sign in to Docker Hub from the Docker Desktop menu.
+> Select Sign in / Create Docker ID from the Docker Desktop menu and follow the on-screen instructions to complete the sign-in process.
+</details>
+
+<details>
+    <summary><b>For Docker Engine</b></summary>
+
+> If you're using a standalone version of Docker Engine, run the `docker login` command from a terminal to authenticate with Docker Hub.
+> For information on how to use the command, see [docker login](https://docs.docker.com/reference/cli/docker/login/).
+</details>
+
+> [!WARNING]
+> Make sure you are logged in to Docker Hub, otherwise we'll trip we'll trip Docker's [pull usage and limits](https://docs.docker.com/docker-hub/usage/pulls/).
+
 ## Forking the Lab Repository
 
 In order to ensure you can work with the lab and experiment freely, it is recommended that you fork this repository.
