@@ -158,4 +158,4 @@ grr config set grafana.token admin
 
 ## Next steps
 
-[Start the lab!](./part-one.md)
+[Start the lab!](./concepts.md)
