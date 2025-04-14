@@ -1,7 +1,5 @@
 import argparse, os, sys, yaml
 
-from grafana_foundation_sdk.cog.encoder import JSONEncoder
-
 from src.catalog import Config as CatalogConfig, Client as Catalog, Service
 from src.dashboard import dashboard_for_service
 from src.grafana import Config as GrafanaConfig, Client as Grafana
@@ -21,7 +19,8 @@ def print_development_dashboard():
     )
 
     dashboard = dashboard_for_service(service)
-    print(JSONEncoder(sort_keys=True, indent=2).encode(dashboard.build()))
+    manifest = Manifest.dashboard("", dashboard.build())
+    print(yaml.dump(manifest.as_data()))
 
 def fetch_services_and_deploy():
     catalog = Catalog(CatalogConfig.from_env())

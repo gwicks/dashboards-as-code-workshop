@@ -18,7 +18,7 @@ It will generate a single dashboard, with a hardcoded service configuration.
 This mode is meant for development, to be used alongside Grizzly:
 
 ```shell
-grr serve --only-spec --kind Dashboard -w -S 'python main.py' .
+grafanactl resources serve --script 'python main.py' --watch .
 ```
 
 ## Where should I start?
@@ -46,5 +46,5 @@ The manifest is written under `./manifests/` by default and can be deployed
 from the CLI:
 
 ```shell
-grr apply ./manifests
+grafanactl resources push -d ./manifests
 ```

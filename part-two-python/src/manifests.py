@@ -20,10 +20,12 @@ class Manifest:
         dash_json = JSONEncoder(sort_keys=True, indent=2).encode(dash)
         data = json.loads(dash_json)
         return cls(
-            api_version="grizzly.grafana.com/v1alpha1",
+            api_version="dashboard.grafana.app/v1alpha1",
             kind="Dashboard",
             metadata={
-                "folder": folder_uid,
+                "annotations": {
+                    "grafana.app/folder": folder_uid,
+                },
                 "name": dash.uid,
             },
             spec=data,
