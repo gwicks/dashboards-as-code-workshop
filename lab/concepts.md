@@ -23,4 +23,4 @@ to learn more about the supported resource types and their options.
 
 ## Next steps
 
-[Part one](./part-one.md.md)
+[Part one](./part-one.md)
