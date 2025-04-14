@@ -5,7 +5,7 @@ namespace App\Grafana;
 use Grafana\Foundation\Dashboard\Dashboard;
 use Symfony\Component\Yaml\Yaml;
 
-class GrizzlyManifest implements \JsonSerializable
+class Manifest implements \JsonSerializable
 {
     public function __construct(
         public readonly string $apiVersion,
@@ -19,10 +19,12 @@ class GrizzlyManifest implements \JsonSerializable
     public static function dashboard(string $folderUid, Dashboard $dashboard): static
     {
         return new static(
-            apiVersion: 'grizzly.grafana.com/v1alpha1',
+            apiVersion: 'dashboard.grafana.app/v1alpha1',
             kind: 'Dashboard',
             metadata: [
-                'folder' => $folderUid,
+                'annotations' => [
+                    "grafana.app/folder" => $folderUid,
+                ],
                 'name' => $dashboard->uid,
             ],
             spec: $dashboard,

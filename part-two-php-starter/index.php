@@ -5,7 +5,7 @@ error_reporting(E_ALL);
 use App\Catalog;
 use App\Dashboard;
 use App\Grafana;
-use App\Grafana\GrizzlyManifest;
+use App\Grafana\Manifest;
 
 require_once __DIR__.'/vendor/autoload.php';
 
@@ -62,7 +62,7 @@ if ($manifests) {
         $dashboard = Dashboard\Overview::forService($service);
         $folderUid = $grafana->findOrCreateFolder($service->name);
 
-        $manifest = GrizzlyManifest::dashboard($folderUid, $dashboard);
+        $manifest = Manifest::dashboard($folderUid, $dashboard);
         $filepath = MANIFESTS_DIR . DIRECTORY_SEPARATOR . $dashboard->uid . '.yaml';
         file_put_contents($filepath, $manifest->toYaml());
     }
@@ -84,4 +84,5 @@ $service = new Catalog\Service(
 
 $dashboard = Dashboard\Overview::forService($service);
 
-echo json_encode($dashboard, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES).PHP_EOL;
+$manifest = Manifest::dashboard("", $dashboard);
+echo $manifest->toYaml().PHP_EOL;

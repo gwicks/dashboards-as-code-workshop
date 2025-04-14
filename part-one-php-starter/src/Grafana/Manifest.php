@@ -5,7 +5,7 @@ namespace App\Grafana;
 use Grafana\Foundation\Dashboard\Dashboard;
 use Symfony\Component\Yaml\Yaml;
 
-class GrizzlyManifest implements \JsonSerializable
+class Manifest implements \JsonSerializable
 {
     public function __construct(
         public readonly string $apiVersion,
