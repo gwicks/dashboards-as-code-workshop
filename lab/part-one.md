@@ -1,6 +1,6 @@
 # Part one
 
-To discover and get acquainted with the [Grafana Foundation SDK](https://grafana.github.io/grafana-foundation-sdk/), we will create our first dashboard as code.
+To get acquainted with the [Grafana Foundation SDK](https://grafana.github.io/grafana-foundation-sdk/), we will create our first dashboard as code.
 
 Instead of starting from a blank page, we'll use an [existing dashboard](http://localhost:3003/d/part-one-test-dashboard/part-one-test-dashboard)
 that showcases a few commonly-used panel types.
@@ -29,15 +29,16 @@ of writing it as a monolithic chunk of code.
 As such, each panel present in the dashboard should be defined in its own
 function/method.
 
-Similarly, we will define "base functions" for each panel type. For each panel
+Similarly, we will define "common functions" for each panel type. For each panel
 type (timeseries, logs, …), a function will be responsible for creating a panel
 of that type with a set of common options.
 
-The purpose of these functions is double:
-* they will allow us to avoid duplicating common options set to panel types
-* they will ensure a consistent look-and-feel across panels of a similar types
+The purpose of these "common functions" is double:
+* avoid duplicating common options set across panels of a similar types
+* ensure a consistent look-and-feel for panels of a similar types
 
-For the purpose of this workshop, here is a list of panel types and their *common* options:
+In this lab, we will focus on the following panel types and configure their
+*common* options as follows:
 
 > * `logs` panels
 >   * `showTime` set to `true`
@@ -80,7 +81,7 @@ are configured as follows:
 
 Recommendations:
 
-* Get acquainted with the codebase in `./part-one-[language]-starter`
+* Start by getting acquainted with the codebase in `./part-one-[language]-starter`
 * Focus on one panel at a time
 * Use the [example dashboard](http://localhost:3003/d/part-one-test-dashboard/part-one-test-dashboard)
   to explore each panel's options and find their equivalent in the [Foundation 

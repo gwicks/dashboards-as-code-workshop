@@ -110,7 +110,8 @@ that can be queried from Grafana.
 
 Recommendations:
 
-* Get acquainted with the codebase in `./part-two-[language]-starter`
+* Start by getting acquainted with the codebase in `./part-two-[language]-starter`
+* Re-use the *common functions* defined in part one
 * Focus on one panel at a time
 * Use the [example dashboard](http://localhost:3003/d/example-products-overview/example-products-service-overview)
   to explore each panel's options and find their equivalent in the [Foundation 
