@@ -2,15 +2,14 @@ name: workshop
 
 services:
   grafana:
-    image: grafana/grafana:11.4.0
+    image: grafana/grafana:main@sha256:43788894561399ea91653390cb553f1f29e63172d896ae15d8103251c6738f0a
     restart: unless-stopped
     ports:
       - '3003:3000'
     volumes:
       - grafana_storage:/var/lib/grafana
-      - ./config/provisioning:/etc/grafana/provisioning
+      - ./config/grafana:/etc/grafana
     environment:
-      - GF_PATHS=/etc/grafana/provisioning
       - GF_LOG_LEVEL=warn
 
   prometheus:
