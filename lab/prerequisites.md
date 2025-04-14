@@ -93,67 +93,36 @@ You can verify that Grafana is up and running by clicking **Open Externally** on
 
 The rest of the instructions in these docs should work the same within the CodeSandbox.io environment.
 
-## Install Grizzly
+## Install `grafanactl`
 
-[Grizzly](https://grafana.github.io/grizzly/) is a CLI tool used to manage Grafana resources.
+[grafanactl](https://github.com/grafana/grafanactl) is a CLI tool used to manage Grafana resources.
 
-Make sure it is installed:
-
-<details>
-    <summary><b>For macOS (with Homebrew)</b></summary>
-
-```shell
-brew install grizzly
-```
-</details>
-
-<details>
-    <summary><b>For macOS (Apple silicon)</b></summary>
-
-```shell
-sudo curl -fSL -o "/usr/local/bin/grr" "https://github.com/grafana/grizzly/releases/download/v0.7.1/grr-darwin-arm64"
-sudo chmod +x /usr/local/bin/grr
-```
-</details>
-
-<details>
-    <summary><b>For macOS (Intel chips)</b></summary>
-
-```shell
-sudo curl -fSL -o "/usr/local/bin/grr" "https://github.com/grafana/grizzly/releases/download/v0.7.1/grr-darwin-amd64"
-sudo chmod +x /usr/local/bin/grr
-```
-</details>
-
-<details>
-    <summary><b>For Linux</b></summary>
-
-```shell
-sudo curl -fSL -o "/usr/local/bin/grr" "https://github.com/grafana/grizzly/releases/download/v0.7.1/grr-linux-amd64"
-sudo chmod +x /usr/local/bin/grr
-```
-</details>
+Follow the [installation instructions](https://github.com/grafana/grafanactl/blob/main/docs/installation.md#prebuilt-binaries) in its documentation.
 
 > [!TIP]
-> Verify that Grizzly is installed and accessible:
+> Verify that `grafanactl` is installed and runs:
+>
 > ```shell
-> grr --version
+> grafanactl --version
 > ```
 
-## Configure Grizzly
+## Configure `grafanactl`
 
-With Grizzly installed, configure it to connect to the lab's Grafana instance:
+With `grafanactl` installed, configure it to connect to the lab's Grafana instance:
 
 ```shell
-grr config set grafana.url http://localhost:3003
-grr config set grafana.user admin
-grr config set grafana.token admin
+grafanactl config set contexts.lab.grafana.server http://localhost:3003
+grafanactl config set contexts.lab.grafana.org-id 1
+grafanactl config set contexts.lab.grafana.user admin
+grafanactl config set contexts.lab.grafana.password admin
+grafanactl config use-context lab
 ```
 
 > [!TIP]
-> Check that Grizzly can indeed connect to the stack:
+> Check that `grafanactl` can indeed connect to the stack:
+>
 > ```shell
-> grr config check
+> grafanactl config check
 > ```
 
 ## Next steps
