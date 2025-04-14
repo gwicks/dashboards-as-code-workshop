@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"flag"
 	"fmt"
 	"log"
@@ -133,10 +132,11 @@ func printDevelopmentDashboard(service Service) {
 		panic(err)
 	}
 
-	dashboardJson, err := json.MarshalIndent(serviceDashboard, "", "  ")
+	manifest := DashboardManifestFrom("", serviceDashboard)
+	manifestYaml, err := yaml.MarshalWithOptions(manifest, yaml.UseJSONMarshaler())
 	if err != nil {
 		panic(err)
 	}
 
-	fmt.Println(string(dashboardJson))
+	fmt.Println(string(manifestYaml))
 }

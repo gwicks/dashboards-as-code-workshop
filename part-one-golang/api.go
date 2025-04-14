@@ -11,6 +11,27 @@ import (
 	"github.com/grafana/grafana-openapi-client-go/models"
 )
 
+type Manifest struct {
+	APIVersion string         `json:"apiVersion" yaml:"apiVersion"`
+	Kind       string         `json:"kind" yaml:"kind"`
+	Metadata   map[string]any `json:"metadata" yaml:"metadata"`
+	Spec       any            `json:"spec" yaml:"spec"`
+}
+
+func DashboardManifestFrom(folderUid string, dash dashboard.Dashboard) Manifest {
+	return Manifest{
+		APIVersion: "dashboard.grafana.app/v1alpha1",
+		Kind:       "Dashboard",
+		Metadata: map[string]any{
+			"annotations": map[string]string{
+				"grafana.app/folder": folderUid,
+			},
+			"name": *dash.Uid,
+		},
+		Spec: dash,
+	}
+}
+
 func grafanaClient(cfg config) *gapi.GrafanaHTTPAPI {
 	return gapi.NewHTTPClientWithConfig(strfmt.Default, &gapi.TransportConfig{
 		// Host is the domain name or IP address of the host that serves the API.
