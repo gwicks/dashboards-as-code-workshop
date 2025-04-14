@@ -2,14 +2,21 @@
 
 For the purposes of this workshop, an entire stack is provided with:
 
- * Grafana
- * Alloy
- * Loki
- * Prometheus
+ * [Grafana](https://grafana.com/grafana/)
+ * [Alloy](https://grafana.com/docs/alloy/latest/)
+ * [Loki](https://grafana.com/products/cloud/logs/)
+ * [Prometheus](https://prometheus.io/)
 
 To run it, you will need [Docker](https://docs.docker.com/engine/) and [Docker Compose](https://docs.docker.com/compose/).
 
-## Important: Authenticating to Docker Hub
+> [!TIP]
+> Verify that Docker is ready:
+> ```shell
+> docker ps
+> docker compose ps
+> ```
+
+## 🚨 Important: Authenticating to Docker Hub
 
 Before going forward with the prerequisites, and to ensure everyone can go through them,
 check that you are authenticated to Docker.
@@ -33,7 +40,7 @@ check that you are authenticated to Docker.
 
 ## Forking the Lab Repository
 
-In order to ensure you can work with the lab and experiment freely, it is recommended that you fork this repository.
+In order to ensure you can work with the lab and experiment freely, it is recommended that you [fork this repository](https://github.com/grafana/dashboards-as-code-workshop/fork).
 
 ## Working with the Lab Repository (Local)
 
@@ -43,7 +50,7 @@ In order to run the lab locally on your development machine you will need to clo
 git clone https://github.com/<your_username>/dashboards-as-code-workshop
 ```
 
-Once done, change into the repository directory:
+Once done, move into the repository directory:
 
 ```shell
 cd dashboards-as-code-workshop
@@ -55,8 +62,9 @@ Then start the stack using Docker:
 docker compose -f docker-compose.yaml up --build
 ```
 
-> [!NOTE]
-> The Grafana instance is accessible at [`http://localhost:3003`](http://localhost:3003)
+> [!TIP]
+> Verify that the Grafana instance is accessible at [`http://localhost:3003`](http://localhost:3003)
+>
 > Credentials: `admin` / `admin`
 
 ## Working with the Lab Repository (CodeSandbox.io)
@@ -126,6 +134,12 @@ sudo chmod +x /usr/local/bin/grr
 ```
 </details>
 
+> [!TIP]
+> Verify that Grizzly is installed and accessible:
+> ```shell
+> grr --version
+> ```
+
 ## Configure Grizzly
 
 With Grizzly installed, configure it to connect to the lab's Grafana instance:
@@ -136,11 +150,11 @@ grr config set grafana.user admin
 grr config set grafana.token admin
 ```
 
-Check that Grizzly can indeed talk to the stack:
-
-```shell
-grr config check
-```
+> [!TIP]
+> Check that Grizzly can indeed connect to the stack:
+> ```shell
+> grr config check
+> ```
 
 ## Next steps
 
