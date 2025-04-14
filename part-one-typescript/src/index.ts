@@ -64,5 +64,7 @@ const generateManifest = async (dashboard: DashboardBuilder): Promise<void> => {
     }
 
 	// By default: print the test dashboard to stdout.
-    console.log(JSON.stringify(dashboard.build(), null, 2));
+    const manifest = dashboardManifest('', dashboard.build());
+    const manifestYaml = yaml.stringify(JSON.parse(JSON.stringify(manifest)));
+    console.log(manifestYaml);
 })();

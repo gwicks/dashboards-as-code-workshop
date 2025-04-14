@@ -20,7 +20,9 @@ const printDevelopmentDashboard = (): void => {
 
     const dashboard = dashboardForService(service);
     
-    console.log(JSON.stringify(dashboard.build(), null, 2));
+    const manifest = dashboardManifest('', dashboard.build());
+    const manifestYaml = yaml.stringify(JSON.parse(JSON.stringify(manifest)));
+    console.log(manifestYaml);
 };
 
 const fetchServicesAndDeploy = async (): Promise<void> => {
