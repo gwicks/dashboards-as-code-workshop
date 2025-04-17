@@ -1,6 +1,7 @@
-import argparse, os, sys, yaml
+import argparse, os, sys
 
 from grafana_foundation_sdk.builders import dashboard
+from grafana_foundation_sdk.cog.encoder import JSONEncoder
 
 from src.dashboard import example_dashboard
 from src.grafana import Config as GrafanaConfig, Client as Grafana
@@ -29,9 +30,9 @@ def generate_manifests(dash: dashboard.Dashboard):
     folder_uid = grafana.find_or_create_folder(DASHBOARD_FOLDER_NAME)
     manifest = Manifest.dashboard(folder_uid, dash)
 
-    filepath = os.path.join(MANIFESTS_DIR, f"{dash.uid}.yaml")
+    filepath = os.path.join(MANIFESTS_DIR, f"{dash.uid}.json")
     with open(filepath, "w") as file:
-        file.write(yaml.dump(manifest.as_data()))
+        file.write(JSONEncoder(sort_keys=True, indent=2).encode(manifest))
     
     print(f"manifests generated in {MANIFESTS_DIR}")
 
@@ -57,4 +58,4 @@ if __name__ == '__main__':
 
     # Assume we're in "development mode" and print a single dashboard to stdout
     manifest = Manifest.dashboard("", dash.build())
-    print(yaml.dump(manifest.as_data()))
+    print(JSONEncoder(sort_keys=True, indent=2).encode(manifest))

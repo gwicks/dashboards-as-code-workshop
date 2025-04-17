@@ -1,4 +1,6 @@
-import argparse, os, sys, yaml
+import argparse, os, sys
+
+from grafana_foundation_sdk.cog.encoder import JSONEncoder
 
 from src.catalog import Config as CatalogConfig, Client as Catalog, Service
 from src.dashboard import dashboard_for_service
@@ -20,7 +22,7 @@ def print_development_dashboard():
 
     dashboard = dashboard_for_service(service)
     manifest = Manifest.dashboard("", dashboard.build())
-    print(yaml.dump(manifest.as_data()))
+    print(JSONEncoder(sort_keys=True, indent=2).encode(manifest))
 
 def fetch_services_and_deploy():
     catalog = Catalog(CatalogConfig.from_env())
@@ -49,9 +51,9 @@ def fetch_services_and_generate_manifests():
 
         manifest = Manifest.dashboard(folder_uid, dashboard)
 
-        filepath = os.path.join(MANIFESTS_DIR, f"{dashboard.uid}.yaml")
+        filepath = os.path.join(MANIFESTS_DIR, f"{dashboard.uid}.json")
         with open(filepath, "w") as file:
-            file.write(yaml.dump(manifest.as_data()))
+            file.write(JSONEncoder(sort_keys=True, indent=2).encode(manifest))
     
     print(f"{len(services)} manifests generated in {MANIFESTS_DIR}")
 

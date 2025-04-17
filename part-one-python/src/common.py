@@ -89,8 +89,8 @@ def prometheus_query(expression: str) -> prometheus.Dataquery:
     return (
         prometheus.Dataquery()
         .expr(expression)
-        .range_val()
-        .format_val(PromQueryFormat.TIME_SERIES)
+        .range()
+        .format(PromQueryFormat.TIME_SERIES)
         .legend_format("__auto")
     )
 
@@ -103,6 +103,6 @@ def instant_prometheus_query(expression: str) -> prometheus.Dataquery:
         prometheus.Dataquery()
         .expr(expression)
         .instant()
-        .format_val(PromQueryFormat.TABLE)
+        .format(PromQueryFormat.TABLE)
         .legend_format("__auto")
     )
