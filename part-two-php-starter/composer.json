@@ -7,8 +7,7 @@
         }
     },
     "require": {
-        "grafana/foundation-sdk": "dev-v11.4.x+cog-v0.0.x",
-        "guzzlehttp/guzzle": "^7.0",
-        "symfony/yaml": "^7.2"
+        "grafana/foundation-sdk": "dev-v11.6.x+cog-v0.0.x",
+        "guzzlehttp/guzzle": "^7.0"
     }
 }

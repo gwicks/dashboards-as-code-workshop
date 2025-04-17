@@ -51,8 +51,8 @@ if ($manifests) {
     $folderUid = $grafana->findOrCreateFolder(DASHBOARD_FOLDER_NAME);
 
     $manifest = Manifest::dashboard($folderUid, $dashboard);
-    $filepath = MANIFESTS_DIR . DIRECTORY_SEPARATOR . $dashboard->uid . '.yaml';
-    file_put_contents($filepath, $manifest->toYaml());
+    $filepath = MANIFESTS_DIR . DIRECTORY_SEPARATOR . $dashboard->uid . '.json';
+    file_put_contents($filepath, json_encode($manifest, JSON_PRETTY_PRINT));
 
     echo "Manifest generated in ".MANIFESTS_DIR.PHP_EOL;
 
@@ -61,4 +61,4 @@ if ($manifests) {
 
 // Assume we're in "development mode" and print the dashboard to stdout.
 $manifest = Manifest::dashboard("", $dashboard);
-echo $manifest->toYaml().PHP_EOL;
+echo json_encode($manifest, JSON_PRETTY_PRINT).PHP_EOL;
