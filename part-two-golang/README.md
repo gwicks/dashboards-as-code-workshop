@@ -14,7 +14,7 @@ go run *.go
 ```
 
 It will generate a single dashboard, with a hardcoded service configuration.
-This mode is meant for development, to be used alongside Grizzly:
+This mode is meant for development, to be used alongside `grafanactl`:
 
 ```shell
 grafanactl resources serve --script 'go run *.go' --watch .

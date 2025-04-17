@@ -13,7 +13,7 @@ php index.php
 ```
 
 It will generate a single dashboard, with a hardcoded service configuration.
-This mode is meant for development, to be used alongside Grizzly:
+This mode is meant for development, to be used alongside `grafanactl`:
 
 ```shell
 grafanactl resources serve --script 'php index.php' --watch .
