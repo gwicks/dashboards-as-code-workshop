@@ -6,27 +6,21 @@ import (
 
 	"github.com/go-openapi/strfmt"
 	"github.com/grafana/grafana-foundation-sdk/go/dashboard"
+	"github.com/grafana/grafana-foundation-sdk/go/resource"
 	gapi "github.com/grafana/grafana-openapi-client-go/client"
 	"github.com/grafana/grafana-openapi-client-go/client/folders"
 	"github.com/grafana/grafana-openapi-client-go/models"
 )
 
-type Manifest struct {
-	APIVersion string         `json:"apiVersion" yaml:"apiVersion"`
-	Kind       string         `json:"kind" yaml:"kind"`
-	Metadata   map[string]any `json:"metadata" yaml:"metadata"`
-	Spec       any            `json:"spec" yaml:"spec"`
-}
-
-func DashboardManifestFrom(folderUid string, dash dashboard.Dashboard) Manifest {
-	return Manifest{
-		APIVersion: "dashboard.grafana.app/v1alpha1",
+func DashboardManifest(folderUid string, dash dashboard.Dashboard) resource.Manifest {
+	return resource.Manifest{
+		ApiVersion: "dashboard.grafana.app/v1alpha1",
 		Kind:       "Dashboard",
-		Metadata: map[string]any{
-			"annotations": map[string]string{
+		Metadata: resource.Metadata{
+			Annotations: map[string]string{
 				"grafana.app/folder": folderUid,
 			},
-			"name": *dash.Uid,
+			Name: *dash.Uid,
 		},
 		Spec: dash,
 	}

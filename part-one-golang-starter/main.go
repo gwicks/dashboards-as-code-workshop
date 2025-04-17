@@ -71,7 +71,7 @@ func generateManifest(cfg config, outputDir string, dashboard dashboard.Dashboar
 		return err
 	}
 
-	manifest := DashboardManifestFrom(folderUid, dashboard)
+	manifest := DashboardManifest(folderUid, dashboard)
 	manifestYaml, err := yaml.MarshalWithOptions(manifest, yaml.UseJSONMarshaler())
 	if err != nil {
 		return err
@@ -102,7 +102,7 @@ func deployDashboard(cfg config, dashboard dashboard.Dashboard) error {
 }
 
 func printDashboard(dashboard dashboard.Dashboard) {
-	manifest := DashboardManifestFrom("", dashboard)
+	manifest := DashboardManifest("", dashboard)
 	manifestYaml, err := yaml.MarshalWithOptions(manifest, yaml.UseJSONMarshaler())
 	if err != nil {
 		panic(err)
