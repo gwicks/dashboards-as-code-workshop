@@ -1,11 +1,5 @@
 import { Dashboard } from "@grafana/grafana-foundation-sdk/dashboard";
-
-export interface Manifest {
-    apiVersion: string;
-    kind: string;
-    metadata: Record<string, any>;
-    spec: any;
-}
+import { Manifest } from "@grafana/grafana-foundation-sdk/resource";
 
 export const dashboardManifest = (folderUid: string, dashboard: Dashboard): Manifest => {
     return {
