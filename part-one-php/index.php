@@ -4,7 +4,7 @@ error_reporting(E_ALL);
 
 use App\Dashboard;
 use App\Grafana;
-use App\Grafana\GrizzlyManifest;
+use App\Grafana\Manifest;
 
 require_once __DIR__.'/vendor/autoload.php';
 
@@ -50,9 +50,9 @@ if ($manifests) {
 
     $folderUid = $grafana->findOrCreateFolder(DASHBOARD_FOLDER_NAME);
 
-    $manifest = GrizzlyManifest::dashboard($folderUid, $dashboard);
-    $filepath = MANIFESTS_DIR . DIRECTORY_SEPARATOR . $dashboard->uid . '.yaml';
-    file_put_contents($filepath, $manifest->toYaml());
+    $manifest = Manifest::dashboard($folderUid, $dashboard);
+    $filepath = MANIFESTS_DIR . DIRECTORY_SEPARATOR . $dashboard->uid . '.json';
+    file_put_contents($filepath, json_encode($manifest, JSON_PRETTY_PRINT));
 
     echo "Manifest generated in ".MANIFESTS_DIR.PHP_EOL;
 
@@ -60,4 +60,5 @@ if ($manifests) {
 }
 
 // Assume we're in "development mode" and print the dashboard to stdout.
-echo json_encode($dashboard, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES).PHP_EOL;
+$manifest = Manifest::dashboard("", $dashboard);
+echo json_encode($manifest, JSON_PRETTY_PRINT).PHP_EOL;

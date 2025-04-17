@@ -81,7 +81,7 @@ def heatmap_panel() -> heatmap.Panel:
         .filter_values(heatmap.FilterValueRange().le(1e-09))
         .y_axis(heatmap.YAxisConfig().unit("s"))
         .mode(TooltipDisplayMode.SINGLE)
-        .scale_distribution(common.ScaleDistributionConfig().type_val(ScaleDistribution.LINEAR))
+        .scale_distribution(common.ScaleDistributionConfig().type(ScaleDistribution.LINEAR))
     )
 
 
@@ -115,8 +115,8 @@ def prometheus_query(expression: str) -> prometheus.Dataquery:
     return (
         prometheus.Dataquery()
         .expr(expression)
-        .range_val()
-        .format_val(PromQueryFormat.TIME_SERIES)
+        .range()
+        .format(PromQueryFormat.TIME_SERIES)
         .legend_format("__auto")
     )
 
@@ -129,6 +129,6 @@ def instant_prometheus_query(expression: str) -> prometheus.Dataquery:
         prometheus.Dataquery()
         .expr(expression)
         .instant()
-        .format_val(PromQueryFormat.TABLE)
+        .format(PromQueryFormat.TABLE)
         .legend_format("__auto")
     )

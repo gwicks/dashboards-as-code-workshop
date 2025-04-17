@@ -6,10 +6,25 @@ import (
 
 	"github.com/go-openapi/strfmt"
 	"github.com/grafana/grafana-foundation-sdk/go/dashboard"
+	"github.com/grafana/grafana-foundation-sdk/go/resource"
 	gapi "github.com/grafana/grafana-openapi-client-go/client"
 	"github.com/grafana/grafana-openapi-client-go/client/folders"
 	"github.com/grafana/grafana-openapi-client-go/models"
 )
+
+func DashboardManifest(folderUid string, dash dashboard.Dashboard) resource.Manifest {
+	return resource.Manifest{
+		ApiVersion: "dashboard.grafana.app/v1alpha1",
+		Kind:       "Dashboard",
+		Metadata: resource.Metadata{
+			Annotations: map[string]string{
+				"grafana.app/folder": folderUid,
+			},
+			Name: *dash.Uid,
+		},
+		Spec: dash,
+	}
+}
 
 func grafanaClient(cfg config) *gapi.GrafanaHTTPAPI {
 	return gapi.NewHTTPClientWithConfig(strfmt.Default, &gapi.TransportConfig{

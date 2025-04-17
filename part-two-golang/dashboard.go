@@ -15,6 +15,7 @@ func dashboardForService(service Service) *dashboard.DashboardBuilder {
 		Tooltip(dashboard.DashboardCursorSyncCrosshair).
 		Refresh("10s").
 		Link(dashboard.NewDashboardLinkBuilder("GitHub Repository").
+			Type(dashboard.DashboardLinkTypeLink).
 			Url(service.RepositoryURL).
 			TargetBlank(true),
 		).

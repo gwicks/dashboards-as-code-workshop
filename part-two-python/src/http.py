@@ -31,7 +31,7 @@ def latencies_heatmap(service: Service) -> heatmap.Panel:
         .unit("reqps")
         .with_target(
             prometheus_query("sum(increase(http_requests_duration_seconds_bucket{service=\"%s\"}[$__rate_interval])) by (le)"%service.name)
-            .format_val(PromQueryFormat.HEATMAP)
+            .format(PromQueryFormat.HEATMAP)
         )
         .datasource(prometheus_datasource_ref())
     )

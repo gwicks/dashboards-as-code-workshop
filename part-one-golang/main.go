@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"flag"
 	"fmt"
 	"log"
@@ -72,7 +71,7 @@ func generateManifest(cfg config, outputDir string, dashboard dashboard.Dashboar
 		return err
 	}
 
-	manifest := DashboardManifestFrom(folderUid, dashboard)
+	manifest := DashboardManifest(folderUid, dashboard)
 	manifestYaml, err := yaml.MarshalWithOptions(manifest, yaml.UseJSONMarshaler())
 	if err != nil {
 		return err
@@ -103,10 +102,11 @@ func deployDashboard(cfg config, dashboard dashboard.Dashboard) error {
 }
 
 func printDashboard(dashboard dashboard.Dashboard) {
-	dashboardJson, err := json.MarshalIndent(dashboard, "", "  ")
+	manifest := DashboardManifest("", dashboard)
+	manifestYaml, err := yaml.MarshalWithOptions(manifest, yaml.UseJSONMarshaler())
 	if err != nil {
 		panic(err)
 	}
 
-	fmt.Println(string(dashboardJson))
+	fmt.Println(string(manifestYaml))
 }
