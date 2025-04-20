@@ -46,7 +46,7 @@ class Common
 
     public static function statPanel(): Stat\PanelBuilder
     {
-        return (new Stat\PanelBuilder());
+        return new Stat\PanelBuilder();
     }
 
     public static function heatmapPanel(): Heatmap\PanelBuilder

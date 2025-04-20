@@ -17,23 +17,24 @@ export const statPanel = (): stat.PanelBuilder => {
 };
 
 // Creates a text panel pre-configured for markdown content.
-export const textPanel = (_content: string): text.PanelBuilder => {
+export const textPanel = (content: string): text.PanelBuilder => {
     return new text.PanelBuilder()
-        // TODO: configure default options for text panels
+        .mode(text.TextMode.Markdown)
+        .content(content)
     ;
 };
 
 // Creates a pre-configured timeseries panel.
 export const timeseriesPanel = (): timeseries.PanelBuilder => {
     return new timeseries.PanelBuilder()
-        // TODO: configure default options for timeseries panels
-    ;
-};
-
-// Creates a pre-configured logs panel.
-export const logPanel = (): logs.PanelBuilder => {
-    return new logs.PanelBuilder()
-        // TODO: configure default options for logs panels
+        .fillOpacity(20)
+        .gradientMode(common.GraphGradientMode.Opacity)
+        .legend(
+            new common.VizLegendOptionsBuilder()
+                .displayMode(common.LegendDisplayMode.List)
+                .placement(common.LegendPlacement.Bottom)
+                .showLegend(true)
+        )
     ;
 };
 
@@ -54,6 +55,16 @@ export const heatmapPanel = (): heatmap.PanelBuilder => {
             new common.ScaleDistributionConfigBuilder()
                 .type(common.ScaleDistribution.Linear)
         )
+    ;
+};
+
+// Creates a pre-configured logs panel.
+export const logPanel = (): logs.PanelBuilder => {
+    return new logs.PanelBuilder()
+        .datasource(lokiDatasourceRef())
+        .showTime(true)
+        .sortOrder(common.LogsSortOrder.Descending)
+        .enableLogDetails(true)
     ;
 };
 

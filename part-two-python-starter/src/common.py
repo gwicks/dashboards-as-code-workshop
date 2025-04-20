@@ -1,5 +1,9 @@
 from grafana_foundation_sdk.builders import common, heatmap, logs, loki, prometheus, stat, text, timeseries
 from grafana_foundation_sdk.models.common import (
+    LogsSortOrder,
+    GraphGradientMode,
+    LegendDisplayMode,
+    LegendPlacement,
     TooltipDisplayMode,
     ScaleDistribution,
 )
@@ -15,6 +19,20 @@ from grafana_foundation_sdk.models.text import TextMode
 # of panels while providing a consistent "look and feel".
 
 
+def loki_datasource_ref() -> DataSourceRef:
+    """
+    Returns a reference to the Loki datasource used by the
+    workshop stack.
+    """
+    return DataSourceRef(type_val="loki", uid="loki")
+
+def prometheus_datasource_ref() -> DataSourceRef:
+    """
+    Returns a reference to the Prometheus datasource used by the
+    workshop stack.
+    """
+    return DataSourceRef(type_val="prometheus", uid="prometheus")
+
 def stat_panel() -> stat.Panel:
     """
     Creates a pre-configured stat panel.
@@ -27,7 +45,8 @@ def text_panel(content: str) -> text.Panel:
     """
     return (
         text.Panel()
-        # TODO: configure default options for text panels
+        .mode(TextMode.MARKDOWN)
+        .content(content)
     )
 
 def timeseries_panel() -> timeseries.Panel:
@@ -36,16 +55,14 @@ def timeseries_panel() -> timeseries.Panel:
     """
     return (
         timeseries.Panel()
-        # TODO: configure default options for timeseries panels
-    )
-
-def log_panel() -> logs.Panel:
-    """
-    Creates a pre-configured logs panel.
-    """
-    return (
-        logs.Panel()
-        # TODO: configure default options for logs panels
+        .fill_opacity(20)
+        .gradient_mode(GraphGradientMode.OPACITY)
+        .legend(
+            common.VizLegendOptions()
+            .display_mode(LegendDisplayMode.LIST)
+            .placement(LegendPlacement.BOTTOM)
+            .show_legend(True)
+        )
     )
 
 def heatmap_panel() -> heatmap.Panel:
@@ -64,7 +81,20 @@ def heatmap_panel() -> heatmap.Panel:
         .filter_values(heatmap.FilterValueRange().le(1e-09))
         .y_axis(heatmap.YAxisConfig().unit("s"))
         .mode(TooltipDisplayMode.SINGLE)
-        .scale_distribution(common.ScaleDistributionConfig().type_val(ScaleDistribution.LINEAR))
+        .scale_distribution(common.ScaleDistributionConfig().type(ScaleDistribution.LINEAR))
+    )
+
+
+def log_panel() -> logs.Panel:
+    """
+    Creates a pre-configured logs panel.
+    """
+    return (
+        logs.Panel()
+        .datasource(loki_datasource_ref())
+        .show_time(True)
+        .sort_order(LogsSortOrder.DESCENDING)
+        .enable_log_details(True)
     )
 
 def loki_query(expression: str) -> loki.Dataquery:
@@ -102,17 +132,3 @@ def instant_prometheus_query(expression: str) -> prometheus.Dataquery:
         .format(PromQueryFormat.TABLE)
         .legend_format("__auto")
     )
-
-def loki_datasource_ref() -> DataSourceRef:
-    """
-    Returns a reference to the Loki datasource used by the
-    workshop stack.
-    """
-    return DataSourceRef(type_val="loki", uid="loki")
-
-def prometheus_datasource_ref() -> DataSourceRef:
-    """
-    Returns a reference to the Prometheus datasource used by the
-    workshop stack.
-    """
-    return DataSourceRef(type_val="prometheus", uid="prometheus")

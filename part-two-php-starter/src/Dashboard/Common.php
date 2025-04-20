@@ -2,9 +2,14 @@
 
 namespace App\Dashboard;
 
+use Grafana\Foundation\Common\GraphGradientMode;
+use Grafana\Foundation\Common\LegendDisplayMode;
+use Grafana\Foundation\Common\LegendPlacement;
+use Grafana\Foundation\Common\LogsSortOrder;
 use Grafana\Foundation\Common\ScaleDistribution;
 use Grafana\Foundation\Common\ScaleDistributionConfigBuilder;
 use Grafana\Foundation\Common\TooltipDisplayMode;
+use Grafana\Foundation\Common\VizLegendOptionsBuilder;
 use Grafana\Foundation\Dashboard\DataSourceRef;
 use Grafana\Foundation\Heatmap;
 use Grafana\Foundation\Heatmap\FilterValueRangeBuilder;
@@ -18,34 +23,30 @@ use Grafana\Foundation\Prometheus;
 use Grafana\Foundation\Prometheus\PromQueryFormat;
 use Grafana\Foundation\Stat;
 use Grafana\Foundation\Text;
+use Grafana\Foundation\Text\TextMode;
 use Grafana\Foundation\Timeseries;
 
 class Common
 {
+    public static function lokiDatasourceRef(): DataSourceRef
+    {
+        return new DataSourceRef(
+            type: 'loki',
+            uid: 'loki',
+        );
+    }
+
+    public static function prometheusDatasourceRef(): DataSourceRef
+    {
+        return new DataSourceRef(
+            type: 'prometheus',
+            uid: 'prometheus',
+        );
+    }
+
     public static function statPanel(): Stat\PanelBuilder
     {
-        return (new Stat\PanelBuilder());
-    }
-
-    public static function logPanel(): Logs\PanelBuilder
-    {
-        return (new Logs\PanelBuilder())
-            // TODO: configure default options for logs panels
-        ;
-    }
-
-    public static function textPanel(string $content): Text\PanelBuilder
-    {
-        return (new Text\PanelBuilder())
-            // TODO: configure default options for text panels
-        ;
-    }
-
-    public static function timeseriesPanel(): Timeseries\PanelBuilder
-    {
-        return (new Timeseries\PanelBuilder())
-            // TODO: configure default options for timeseries panels
-        ;
+        return new Stat\PanelBuilder();
     }
 
     public static function heatmapPanel(): Heatmap\PanelBuilder
@@ -62,6 +63,38 @@ class Common
             ->yAxis((new YAxisConfigBuilder())->unit('s'))
             ->mode(TooltipDisplayMode::single())
             ->scaleDistribution((new ScaleDistributionConfigBuilder())->type(ScaleDistribution::linear()))
+        ;
+    }
+
+    public static function logPanel(): Logs\PanelBuilder
+    {
+        return (new Logs\PanelBuilder())
+            ->datasource(self::lokiDatasourceRef())
+            ->showTime(true)
+            ->sortOrder(LogsSortOrder::descending())
+            ->enableLogDetails(true)
+        ;
+    }
+
+    public static function textPanel(string $content): Text\PanelBuilder
+    {
+        return (new Text\PanelBuilder())
+            ->mode(TextMode::markdown())
+            ->content($content)
+        ;
+    }
+
+    public static function timeseriesPanel(): Timeseries\PanelBuilder
+    {
+        return (new Timeseries\PanelBuilder())
+            ->fillOpacity(20)
+            ->gradientMode(GraphGradientMode::opacity())
+            ->legend(
+                (new VizLegendOptionsBuilder())
+                    ->displayMode(LegendDisplayMode::list())
+                    ->placement(LegendPlacement::bottom())
+                    ->showLegend(true)
+            )
         ;
     }
 
@@ -92,21 +125,5 @@ class Common
             ->QueryType('range')
             ->legendFormat('__auto')
         ;
-    }
-
-    public static function lokiDatasourceRef(): DataSourceRef
-    {
-        return new DataSourceRef(
-            type: 'loki',
-            uid: 'loki',
-        );
-    }
-
-    public static function prometheusDatasourceRef(): DataSourceRef
-    {
-        return new DataSourceRef(
-            type: 'prometheus',
-            uid: 'prometheus',
-        );
     }
 }
