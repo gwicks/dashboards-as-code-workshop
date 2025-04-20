@@ -246,8 +246,7 @@
     "refresh": "10s",
     "schemaVersion": 40,
     "tags": [
-      "test",
-      "generated",
+      "example",
       "part-one"
     ],
     "templating": {
