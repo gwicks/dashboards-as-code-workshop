@@ -29,23 +29,50 @@ def example_dashboard() -> dashboard.Dashboard:
 def prometheus_version_stat() -> stat.Panel:
     return (
         stat_panel()
-	    # TODO: configure the panel
+        # TODO: configure the panel
+        #
+        #  * `title`: `Prometheus version`
+        #  * `transparent` set to `true`
+        #  * `reduce` options
+        #    * `calcs` set to `["last"]`
+        #    * `fields` set to `/^version$/`
+        #  * Instant Prometheus query: `prometheus_build_info{}` (see common.instantPrometheusQuery())
+        #  * `datasource`: Prometheus datasource ref (see common.prometheusDatasourceRef())
+        #
+        # See: https://grafana.github.io/grafana-foundation-sdk/v11.6.x+cog-v0.0.x/python/Reference/stat/builder-Panel/
     )
 
 def description_text() -> text.Panel:
     return (
         text_panel("")
-	    # TODO: configure the panel
+        # TODO: configure the panel
+        #
+        #  * `content`: `Text panels are supported too! Even with *markdown* text :)`
+        #  * `transparent` set to `true`
+        #
+        # See: https://grafana.github.io/grafana-foundation-sdk/v11.6.x+cog-v0.0.x/python/Reference/text/builder-Panel/
     )
 
 def unfiltered_logs() -> logs.Panel:
     return (
         log_panel()
-	    # TODO: configure the panel
+        # TODO: configure the panel
+        #
+        #  * `title`: `Logs`
+        #  * Loki query: `{job="app_logs"}` (see common.lokiQuery())
+        #  * `datasource`: loki datasource ref (see common.lokiDatasourceRef())
+        #
+        # See: https://grafana.github.io/grafana-foundation-sdk/v11.6.x+cog-v0.0.x/python/Reference/logs/builder-Panel/
     )
 
 def prometheus_goroutines_timeseries() -> logs.Panel:
     return (
         timeseries_panel()
-	    # TODO: configure the panel
+        # TODO: configure the panel
+        #
+        #  * `title`: `Prometheus goroutines`
+        #  * Prometheus query: `go_goroutines{job="prometheus"}` (see common.prometheusQuery())
+        #  * `datasource`: prometheus datasource ref (see common.prometheusDatasourceRef())
+        #
+        # See: https://grafana.github.io/grafana-foundation-sdk/v11.6.x+cog-v0.0.x/python/Reference/timeseries/builder-Panel/
     )

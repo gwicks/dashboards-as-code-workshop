@@ -10,6 +10,8 @@ def stat_panel() -> stat.Panel:
     """
     Creates a pre-configured stat panel.
     """
+
+    # no specific options required for this lab.
     return stat.Panel()
 
 def text_panel(content: str) -> text.Panel:
@@ -19,6 +21,10 @@ def text_panel(content: str) -> text.Panel:
     return (
         text.Panel()
         # TODO: configure default options for text panels
+        #
+        #  * `mode` set to `markdown`
+        #
+        # See: https://grafana.github.io/grafana-foundation-sdk/v11.6.x+cog-v0.0.x/python/Reference/text/builder-Panel/
     )
 
 def timeseries_panel() -> timeseries.Panel:
@@ -28,6 +34,15 @@ def timeseries_panel() -> timeseries.Panel:
     return (
         timeseries.Panel()
         # TODO: configure default options for timeseries panels
+        #
+        #  * `fillOpacity` set to `20`
+        #  * `gradientMode` set to  `opacity`
+        #  * `legend` options:
+        #    * `displayMode` set to `list`
+        #    * `placement` set to `bottom`
+        #    * `showLegend` set to `true`
+        #
+        # See: https://grafana.github.io/grafana-foundation-sdk/v11.6.x+cog-v0.0.x/python/Reference/timeseries/builder-Panel/
     )
 
 def log_panel() -> logs.Panel:
@@ -37,6 +52,12 @@ def log_panel() -> logs.Panel:
     return (
         logs.Panel()
         # TODO: configure default options for logs panels
+        #
+        #  * `showTime` set to `true`
+        #  * `sortOrder` set to `Descending`
+        #  * `enableLogDetails` set to `true`
+        #
+        # See: https://grafana.github.io/grafana-foundation-sdk/v11.6.x+cog-v0.0.x/python/Reference/logs/builder-Panel/
     )
 
 def loki_datasource_ref() -> DataSourceRef:

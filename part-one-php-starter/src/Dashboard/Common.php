@@ -13,23 +13,33 @@ use Grafana\Foundation\Timeseries;
 
 class Common
 {
-
     public static function statPanel(): Stat\PanelBuilder
     {
-        return (new Stat\PanelBuilder());
+        // no specific options required for this lab.
+        return new Stat\PanelBuilder();
     }
 
     public static function logPanel(): Logs\PanelBuilder
     {
         return (new Logs\PanelBuilder())
             // TODO: configure default options for logs panels
+            //
+            //  * `showTime` set to `true`
+            //  * `sortOrder` set to `Descending`
+            //  * `enableLogDetails` set to `true`
+            //
+            // See: https://grafana.github.io/grafana-foundation-sdk/v11.6.x+cog-v0.0.x/php/Reference/logs/builder-PanelBuilder/
         ;
     }
 
     public static function textPanel(string $content): Text\PanelBuilder
     {
         return (new Text\PanelBuilder())
-	        // TODO: configure default options for text panels
+            // TODO: configure default options for text panels
+            //
+            //  * `mode` set to `markdown`
+            //
+            // See: https://grafana.github.io/grafana-foundation-sdk/v11.6.x+cog-v0.0.x/php/Reference/text/builder-PanelBuilder/
         ;
     }
 
@@ -37,6 +47,15 @@ class Common
     {
         return (new Timeseries\PanelBuilder())
             // TODO: configure default options for timeseries panels
+            //
+            //  * `fillOpacity` set to `20`
+            //  * `gradientMode` set to  `opacity`
+            //  * `legend` options:
+            //    * `displayMode` set to `list`
+            //    * `placement` set to `bottom`
+            //    * `showLegend` set to `true`
+            //
+            // See: https://grafana.github.io/grafana-foundation-sdk/v11.6.x+cog-v0.0.x/php/Reference/timeseries/builder-PanelBuilder/
         ;
     }
 

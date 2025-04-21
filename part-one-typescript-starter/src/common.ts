@@ -11,20 +11,34 @@ import * as timeseries from '@grafana/grafana-foundation-sdk/timeseries';
 
 // Creates a pre-configured stat panel.
 export const statPanel = (): stat.PanelBuilder => {
+    // no specific options required for this lab.
     return new stat.PanelBuilder();
 };
 
 // Creates a text panel pre-configured for markdown content.
 export const textPanel = (_content: string): text.PanelBuilder => {
     return new text.PanelBuilder()
-	    // TODO: configure default options for text panels
+        // TODO: configure default options for text panels
+        //
+        //  * `mode` set to `markdown`
+        //
+        // See: https://grafana.github.io/grafana-foundation-sdk/v11.6.x+cog-v0.0.x/typescript/Reference/text/builder-PanelBuilder/
     ;
 };
 
 // Creates a pre-configured timeseries panel.
 export const timeseriesPanel = (): timeseries.PanelBuilder => {
     return new timeseries.PanelBuilder()
-	    // TODO: configure default options for timeseries panels
+        // TODO: configure default options for timeseries panels
+        //
+        //  * `fillOpacity` set to `20`
+        //  * `gradientMode` set to  `opacity`
+        //  * `legend` options:
+        //    * `displayMode` set to `list`
+        //    * `placement` set to `bottom`
+        //    * `showLegend` set to `true`
+        //
+        // See: https://grafana.github.io/grafana-foundation-sdk/v11.6.x+cog-v0.0.x/typescript/Reference/timeseries/builder-PanelBuilder/
     ;
 };
 
@@ -32,6 +46,12 @@ export const timeseriesPanel = (): timeseries.PanelBuilder => {
 export const logPanel = (): logs.PanelBuilder => {
     return new logs.PanelBuilder()
         // TODO: configure default options for logs panels
+        //
+        //  * `showTime` set to `true`
+        //  * `sortOrder` set to `Descending`
+        //  * `enableLogDetails` set to `true`
+        //
+        // See: https://grafana.github.io/grafana-foundation-sdk/v11.6.x+cog-v0.0.x/typescript/Reference/logs/builder-PanelBuilder/
     ;
 };
 

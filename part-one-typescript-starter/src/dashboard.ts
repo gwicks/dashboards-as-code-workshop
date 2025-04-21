@@ -35,24 +35,51 @@ export const exampleDashboard = (): DashboardBuilder => {
 
 export const prometheusVersionStat = (): stat.PanelBuilder => {
     return statPanel()
-	    // TODO: configure the panel
+        // TODO: configure the panel
+        //
+        //  * `title`: `Prometheus version`
+        //  * `transparent` set to `true`
+        //  * `reduce` options
+        //    * `calcs` set to `["last"]`
+        //    * `fields` set to `/^version$/`
+        //  * Instant Prometheus query: `prometheus_build_info{}` (see common.instantPrometheusQuery())
+        //  * `datasource`: Prometheus datasource ref (see common.prometheusDatasourceRef())
+        //
+        // See: https://grafana.github.io/grafana-foundation-sdk/v11.6.x+cog-v0.0.x/typescript/Reference/stat/builder-PanelBuilder/
     ;
 };
 
 export const descriptionText = (): text.PanelBuilder => {
     return textPanel(``)
         // TODO: configure the panel
+        //
+        //  * `content`: `Text panels are supported too! Even with *markdown* text :)`
+        //  * `transparent` set to `true`
+        //
+        // See: https://grafana.github.io/grafana-foundation-sdk/v11.6.x+cog-v0.0.x/typescript/Reference/text/builder-PanelBuilder/
     ;
 };
 
 export const unfilteredLogs = (): logs.PanelBuilder => {
     return logPanel()
         // TODO: configure the panel
+        //
+        //  * `title`: `Logs`
+        //  * Loki query: `{job="app_logs"}` (see common.lokiQuery())
+        //  * `datasource`: loki datasource ref (see common.lokiDatasourceRef())
+        //
+        // See: https://grafana.github.io/grafana-foundation-sdk/v11.6.x+cog-v0.0.x/typescript/Reference/logs/builder-PanelBuilder/
     ;
 };
 
 export const prometheusGoroutinesTimeseries = (): timeseries.PanelBuilder => {
     return timeseriesPanel()
         // TODO: configure the panel
+        //
+        //  * `title`: `Prometheus goroutines`
+        //  * Prometheus query: `go_goroutines{job="prometheus"}` (see common.prometheusQuery())
+        //  * `datasource`: prometheus datasource ref (see common.prometheusDatasourceRef())
+        //
+        // See: https://grafana.github.io/grafana-foundation-sdk/v11.6.x+cog-v0.0.x/typescript/Reference/timeseries/builder-PanelBuilder/
     ;
 };

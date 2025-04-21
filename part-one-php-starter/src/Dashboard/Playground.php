@@ -36,7 +36,17 @@ class Playground
     private static function prometheusVersionStat(): Stat\PanelBuilder
     {
         return Common::statPanel()
-	        // TODO: configure the panel
+            // TODO: configure the panel
+            //
+            //  * `title`: `Prometheus version`
+            //  * `transparent` set to `true`
+            //  * `reduce` options
+            //    * `calcs` set to `["last"]`
+            //    * `fields` set to `/^version$/`
+            //  * Instant Prometheus query: `prometheus_build_info{}` (see Common::instantPrometheusQuery())
+            //  * `datasource`: Prometheus datasource ref (see Common::prometheusDatasourceRef())
+            //
+            // See: https://grafana.github.io/grafana-foundation-sdk/v11.6.x+cog-v0.0.x/php/Reference/stat/builder-PanelBuilder/
         ;
     }
 
@@ -44,6 +54,11 @@ class Playground
     {
         return Common::textPanel('')
             // TODO: configure the panel
+            //
+            //  * `content`: `Text panels are supported too! Even with *markdown* text :)`
+            //  * `transparent` set to `true`
+            //
+            // See: https://grafana.github.io/grafana-foundation-sdk/v11.6.x+cog-v0.0.x/php/Reference/text/builder-PanelBuilder/
         ;
     }
 
@@ -51,6 +66,12 @@ class Playground
     {
         return Common::logPanel()
             // TODO: configure the panel
+            //
+            //  * `title`: `Logs`
+            //  * Loki query: `{job="app_logs"}` (see Common::lokiQuery())
+            //  * `datasource`: loki datasource ref (see Common::lokiDatasourceRef() function)
+            //
+            // See: https://grafana.github.io/grafana-foundation-sdk/v11.6.x+cog-v0.0.x/php/Reference/logs/builder-PanelBuilder/
         ;
     }
 
@@ -58,6 +79,12 @@ class Playground
     {
         return Common::timeseriesPanel()
             // TODO: configure the panel
+            //
+            //  * `title`: `Prometheus goroutines`
+            //  * Prometheus query: `go_goroutines{job="prometheus"}` (see Common::prometheusQuery())
+            //  * `datasource`: prometheus datasource ref (see Common::prometheusDatasourceRef())
+            //
+            // See: https://grafana.github.io/grafana-foundation-sdk/v11.6.x+cog-v0.0.x/php/Reference/timeseries/builder-PanelBuilder/
         ;
     }
 }
