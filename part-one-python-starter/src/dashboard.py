@@ -1,4 +1,4 @@
-from grafana_foundation_sdk.builders import dashboard, logs, stat, text
+from grafana_foundation_sdk.builders import dashboard, logs, stat, text, timeseries
 from grafana_foundation_sdk.models.dashboard import DashboardCursorSync
 
 from .common import (
@@ -7,6 +7,7 @@ from .common import (
     stat_panel,
     text_panel,
 )
+
 
 def example_dashboard() -> dashboard.Dashboard:
     builder = (
@@ -26,6 +27,7 @@ def example_dashboard() -> dashboard.Dashboard:
 
     return builder
 
+
 def prometheus_version_stat() -> stat.Panel:
     return (
         stat_panel()
@@ -42,6 +44,7 @@ def prometheus_version_stat() -> stat.Panel:
         # See: https://grafana.github.io/grafana-foundation-sdk/v11.6.x+cog-v0.0.x/python/Reference/stat/builder-Panel/
     )
 
+
 def description_text() -> text.Panel:
     return (
         text_panel("")
@@ -52,6 +55,7 @@ def description_text() -> text.Panel:
         #
         # See: https://grafana.github.io/grafana-foundation-sdk/v11.6.x+cog-v0.0.x/python/Reference/text/builder-Panel/
     )
+
 
 def unfiltered_logs() -> logs.Panel:
     return (
@@ -65,7 +69,8 @@ def unfiltered_logs() -> logs.Panel:
         # See: https://grafana.github.io/grafana-foundation-sdk/v11.6.x+cog-v0.0.x/python/Reference/logs/builder-Panel/
     )
 
-def prometheus_goroutines_timeseries() -> logs.Panel:
+
+def prometheus_goroutines_timeseries() -> timeseries.Panel:
     return (
         timeseries_panel()
         # TODO: configure the panel

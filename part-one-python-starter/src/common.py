@@ -1,4 +1,11 @@
-from grafana_foundation_sdk.builders import logs, loki, prometheus, stat, text, timeseries
+from grafana_foundation_sdk.builders import (
+    logs,
+    loki,
+    prometheus,
+    stat,
+    text,
+    timeseries,
+)
 from grafana_foundation_sdk.models.dashboard import DataSourceRef
 from grafana_foundation_sdk.models.prometheus import PromQueryFormat
 
@@ -14,6 +21,7 @@ def stat_panel() -> stat.Panel:
     # no specific options required for this lab.
     return stat.Panel()
 
+
 def text_panel(content: str) -> text.Panel:
     """
     Creates a pre-configured text panel.
@@ -26,6 +34,7 @@ def text_panel(content: str) -> text.Panel:
         #
         # See: https://grafana.github.io/grafana-foundation-sdk/v11.6.x+cog-v0.0.x/python/Reference/text/builder-Panel/
     )
+
 
 def timeseries_panel() -> timeseries.Panel:
     """
@@ -45,6 +54,7 @@ def timeseries_panel() -> timeseries.Panel:
         # See: https://grafana.github.io/grafana-foundation-sdk/v11.6.x+cog-v0.0.x/python/Reference/timeseries/builder-Panel/
     )
 
+
 def log_panel() -> logs.Panel:
     """
     Creates a pre-configured logs panel.
@@ -60,12 +70,14 @@ def log_panel() -> logs.Panel:
         # See: https://grafana.github.io/grafana-foundation-sdk/v11.6.x+cog-v0.0.x/python/Reference/logs/builder-Panel/
     )
 
+
 def loki_datasource_ref() -> DataSourceRef:
     """
     Returns a reference to the Loki datasource used by the
     workshop stack.
     """
     return DataSourceRef(type_val="loki", uid="loki")
+
 
 def prometheus_datasource_ref() -> DataSourceRef:
     """
@@ -74,16 +86,13 @@ def prometheus_datasource_ref() -> DataSourceRef:
     """
     return DataSourceRef(type_val="prometheus", uid="prometheus")
 
+
 def loki_query(expression: str) -> loki.Dataquery:
     """
     Creates a Loki query pre-configured for range vectors.
     """
-    return (
-        loki.Dataquery()
-        .expr(expression)
-        .query_type("range")
-        .legend_format("__auto")
-    )
+    return loki.Dataquery().expr(expression).query_type("range").legend_format("__auto")
+
 
 def prometheus_query(expression: str) -> prometheus.Dataquery:
     """
@@ -96,6 +105,7 @@ def prometheus_query(expression: str) -> prometheus.Dataquery:
         .format(PromQueryFormat.TIME_SERIES)
         .legend_format("__auto")
     )
+
 
 def instant_prometheus_query(expression: str) -> prometheus.Dataquery:
     """
