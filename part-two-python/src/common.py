@@ -1,4 +1,13 @@
-from grafana_foundation_sdk.builders import common, heatmap, logs, loki, prometheus, stat, text, timeseries
+from grafana_foundation_sdk.builders import (
+    common,
+    heatmap,
+    logs,
+    loki,
+    prometheus,
+    stat,
+    text,
+    timeseries,
+)
 from grafana_foundation_sdk.models.common import (
     LogsSortOrder,
     GraphGradientMode,
@@ -26,6 +35,7 @@ def loki_datasource_ref() -> DataSourceRef:
     """
     return DataSourceRef(type_val="loki", uid="loki")
 
+
 def prometheus_datasource_ref() -> DataSourceRef:
     """
     Returns a reference to the Prometheus datasource used by the
@@ -33,21 +43,20 @@ def prometheus_datasource_ref() -> DataSourceRef:
     """
     return DataSourceRef(type_val="prometheus", uid="prometheus")
 
+
 def stat_panel() -> stat.Panel:
     """
     Creates a pre-configured stat panel.
     """
     return stat.Panel()
 
+
 def text_panel(content: str) -> text.Panel:
     """
     Creates a pre-configured text panel.
     """
-    return (
-        text.Panel()
-        .mode(TextMode.MARKDOWN)
-        .content(content)
-    )
+    return text.Panel().mode(TextMode.MARKDOWN).content(content)
+
 
 def timeseries_panel() -> timeseries.Panel:
     """
@@ -65,6 +74,7 @@ def timeseries_panel() -> timeseries.Panel:
         )
     )
 
+
 def heatmap_panel() -> heatmap.Panel:
     """
     Creates a pre-configured heatmap panel.
@@ -81,7 +91,9 @@ def heatmap_panel() -> heatmap.Panel:
         .filter_values(heatmap.FilterValueRange().le(1e-09))
         .y_axis(heatmap.YAxisConfig().unit("s"))
         .mode(TooltipDisplayMode.SINGLE)
-        .scale_distribution(common.ScaleDistributionConfig().type(ScaleDistribution.LINEAR))
+        .scale_distribution(
+            common.ScaleDistributionConfig().type(ScaleDistribution.LINEAR)
+        )
     )
 
 
@@ -97,16 +109,13 @@ def log_panel() -> logs.Panel:
         .enable_log_details(True)
     )
 
+
 def loki_query(expression: str) -> loki.Dataquery:
     """
     Creates a Loki query pre-configured for range vectors.
     """
-    return (
-        loki.Dataquery()
-        .expr(expression)
-        .query_type("range")
-        .legend_format("__auto")
-    )
+    return loki.Dataquery().expr(expression).query_type("range").legend_format("__auto")
+
 
 def prometheus_query(expression: str) -> prometheus.Dataquery:
     """
@@ -119,6 +128,7 @@ def prometheus_query(expression: str) -> prometheus.Dataquery:
         .format(PromQueryFormat.TIME_SERIES)
         .legend_format("__auto")
     )
+
 
 def instant_prometheus_query(expression: str) -> prometheus.Dataquery:
     """

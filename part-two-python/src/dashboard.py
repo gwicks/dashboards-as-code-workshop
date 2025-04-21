@@ -8,6 +8,7 @@ from .catalog import Service
 from .common import loki_datasource_ref
 from . import grpc, http, overview
 
+
 def dashboard_for_service(service: Service) -> dashboard.Dashboard:
     builder = (
         dashboard.Dashboard(f"{service.name} service overview")
@@ -22,10 +23,7 @@ def dashboard_for_service(service: Service) -> dashboard.Dashboard:
             .url(service.repository_url)
             .target_blank(True)
         )
-        .with_variable(
-            dashboard.TextBoxVariable("logs_filter")
-            .label("Logs filter")
-        )
+        .with_variable(dashboard.TextBoxVariable("logs_filter").label("Logs filter"))
         .with_variable(log_levels_variable(service))
     )
 
@@ -50,17 +48,21 @@ def dashboard_for_service(service: Service) -> dashboard.Dashboard:
 
     return builder
 
+
 def log_levels_variable(service: Service) -> dashboard.QueryVariable:
     return (
         dashboard.QueryVariable("logs_level")
         .label("Logs level")
         .datasource(loki_datasource_ref())
-        .query({
-            'label': 'level',
-            'stream': '{service="%s"}'%service.name,
-            'type': 1,
-        })
+        .query(
+            {
+                "label": "level",
+                "stream": '{service="%s"}' % service.name,
+                "type": 1,
+            }
+        )
         .refresh(VariableRefresh.ON_TIME_RANGE_CHANGED)
         .include_all(True)
         .all_value(".*")
     )
+

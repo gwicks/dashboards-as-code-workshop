@@ -1,4 +1,6 @@
-import argparse, os, sys
+import argparse
+import os
+import sys
 
 from grafana_foundation_sdk.cog.encoder import JSONEncoder
 
@@ -8,21 +10,22 @@ from src.grafana import Config as GrafanaConfig, Client as Grafana
 from src.manifests import Manifest
 
 
-MANIFESTS_DIR = './manifests'
+MANIFESTS_DIR = "./manifests"
 
 
 def print_development_dashboard():
     service = Service(
-        name='products',
-        description='A service related to products',
+        name="products",
+        description="A service related to products",
         has_http=True,
         has_grpc=True,
-        repository_url='http://github.com/org/products-service',
+        repository_url="http://github.com/org/products-service",
     )
 
     dashboard = dashboard_for_service(service)
     manifest = Manifest.dashboard("", dashboard.build())
     print(JSONEncoder(sort_keys=True, indent=2).encode(manifest))
+
 
 def fetch_services_and_deploy():
     catalog = Catalog(CatalogConfig.from_env())
@@ -33,9 +36,10 @@ def fetch_services_and_deploy():
         dashboard = dashboard_for_service(service)
         folder_uid = grafana.find_or_create_folder(service.name)
 
-        grafana.persist_dashboard(folder_uid, dashboard)
-    
+        grafana.persist_dashboard(folder_uid, dashboard.build())
+
     print(f"{len(services)} dashboards deployed")
+
 
 def fetch_services_and_generate_manifests():
     catalog = Catalog(CatalogConfig.from_env())
@@ -54,14 +58,22 @@ def fetch_services_and_generate_manifests():
         filepath = os.path.join(MANIFESTS_DIR, f"{dashboard.uid}.json")
         with open(filepath, "w") as file:
             file.write(JSONEncoder(sort_keys=True, indent=2).encode(manifest))
-    
+
     print(f"{len(services)} manifests generated in {MANIFESTS_DIR}")
 
 
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser(prog='part-two')
-    parser.add_argument('--deploy', action='store_true', help='Fetch the list of services from the catalog and deploy a dashboard for each entry')
-    parser.add_argument('--manifests', action='store_true', help='Fetch the list of services from the catalog and generate a dashboard manifest for each entry')
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(prog="part-two")
+    parser.add_argument(
+        "--deploy",
+        action="store_true",
+        help="Fetch the list of services from the catalog and deploy a dashboard for each entry",
+    )
+    parser.add_argument(
+        "--manifests",
+        action="store_true",
+        help="Fetch the list of services from the catalog and generate a dashboard manifest for each entry",
+    )
 
     args = parser.parse_args()
 

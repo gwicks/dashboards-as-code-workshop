@@ -1,4 +1,4 @@
-from grafana_foundation_sdk.builders import common, logs, stat, text
+from grafana_foundation_sdk.builders import common, logs, stat, text, timeseries
 from grafana_foundation_sdk.models.common import (
     GraphDrawStyle,
     LegendDisplayMode,
@@ -24,9 +24,7 @@ def version_stat(service: Service) -> stat.Panel:
     return (
         stat_panel()
         .title("Version")
-        .with_target(
-            instant_prometheus_query("app_infos{service=\"%s\"}"%service.name)
-        )
+        .with_target(instant_prometheus_query('app_infos{service="%s"}' % service.name))
         .transparent(True)
         .datasource(prometheus_datasource_ref())
         .reduce_options(
@@ -37,19 +35,20 @@ def version_stat(service: Service) -> stat.Panel:
         )
     )
 
-def description_text(service: Service) -> text.Panel:
-    return (
-        text_panel(service.description)
-        .transparent(True)
-    )
 
-def logs_volume_timeseries(service: Service) -> logs.Panel:
+def description_text(service: Service) -> text.Panel:
+    return text_panel(service.description).transparent(True)
+
+
+def logs_volume_timeseries(service: Service) -> timeseries.Panel:
     return (
         timeseries_panel()
         .title("Logs volume")
         .with_target(
-            loki_query("sum by (level) (count_over_time({service=\"%s\", level=~\"$logs_level\"} |~ \"$logs_filter\" [$__auto]))"%service.name)
-            .legend_format("{{ level }}")
+            loki_query(
+                'sum by (level) (count_over_time({service="%s", level=~"$logs_level"} |~ "$logs_filter" [$__auto]))'
+                % service.name
+            ).legend_format("{{ level }}")
         )
         .datasource(loki_datasource_ref())
         .stacking(common.StackingConfig().mode(StackingMode.NORMAL))
@@ -62,10 +61,20 @@ def logs_volume_timeseries(service: Service) -> logs.Panel:
             .show_legend(True)
         )
         .draw_style(GraphDrawStyle.BARS)
-        .override_by_name("INFO", [
-            DynamicConfigValue(id_val="color", value={"mode": "fixed", "fixedColor": "green"}),
-        ])
-        .override_by_name("ERROR", [
-            DynamicConfigValue(id_val="color", value={"mode": "fixed", "fixedColor": "red"}),
-        ])
+        .override_by_name(
+            "INFO",
+            [
+                DynamicConfigValue(
+                    id_val="color", value={"mode": "fixed", "fixedColor": "green"}
+                ),
+            ],
+        )
+        .override_by_name(
+            "ERROR",
+            [
+                DynamicConfigValue(
+                    id_val="color", value={"mode": "fixed", "fixedColor": "red"}
+                ),
+            ],
+        )
     )
