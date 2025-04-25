@@ -2,26 +2,28 @@ name: workshop
 
 services:
   grafana:
-    image: grafana/grafana:main@sha256:43788894561399ea91653390cb553f1f29e63172d896ae15d8103251c6738f0a
+    image: grafana/grafana:main@sha256:b0d92f4e19372abcf5431348803b8cf2d6f4b16ce280a22258fac6d00bec9a71
     restart: unless-stopped
     ports:
-      - '3003:3000'
+      - "3000:3000"
     volumes:
       - grafana_storage:/var/lib/grafana
       - ./config/grafana:/etc/grafana
     environment:
       - GF_LOG_LEVEL=warn
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
 
   prometheus:
     image: prom/prometheus:v3.1.0
     volumes:
       - ./config/prometheus.yaml:/etc/prometheus/prometheus.yml
-    command: '--log.level=warn --config.file=/etc/prometheus/prometheus.yml --storage.tsdb.path=/prometheus'
+    command: "--log.level=warn --config.file=/etc/prometheus/prometheus.yml --storage.tsdb.path=/prometheus"
 
   loki:
     image: grafana/loki:3.4
     ports:
-      - '3100:3100'
+      - "3100:3100"
     volumes:
       - ./config/loki.yaml:/etc/loki/loki.yml
     command: -config.file=/etc/loki/loki.yml
@@ -29,7 +31,7 @@ services:
   alloy:
     image: grafana/alloy:v1.7.1
     ports:
-      - '12345:12345'
+      - "12345:12345"
     volumes:
       - ./config/alloy.alloy:/etc/alloy/alloy.alloy
       - tmp-logs:/tmp/app-logs
@@ -42,7 +44,7 @@ services:
   dummy_service:
     build: ./dummy/
     ports:
-      - '8081:8080'
+      - "8081:8080"
     develop:
       watch:
         - action: rebuild
@@ -53,7 +55,7 @@ services:
   service_catalog:
     build: ./service-catalog/
     ports:
-      - '8082:8080'
+      - "8082:8080"
     develop:
       watch:
         - action: rebuild

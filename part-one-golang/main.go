@@ -15,7 +15,7 @@ import (
 const testFolderName = "Part one"
 
 type config struct {
-	GrafanaHost     string `env:"GRAFANA_HOST" envDefault:"localhost:3003"`
+	GrafanaHost     string `env:"GRAFANA_HOST" envDefault:"localhost:3000"`
 	GrafanaUser     string `env:"GRAFANA_USER" envDefault:"admin"`
 	GrafanaPassword string `env:"GRAFANA_PASSWORD" envDefault:"admin"`
 }
@@ -28,7 +28,7 @@ func main() {
 
 	deploy := false
 	manifests := false
-	manifestsDirectory := "./manifests"
+	manifestsDirectory := "./resources"
 	flag.BoolVar(&deploy, "deploy", deploy, "Generate and deploy the test dashboard directly to a Grafana instance")
 	flag.BoolVar(&manifests, "manifests", manifests, "Generate a dashboard manifest for the test dashboard and write it to disk")
 	flag.StringVar(&manifestsDirectory, "manifests-directory", manifestsDirectory, "Directory in which the manifests will be generated")

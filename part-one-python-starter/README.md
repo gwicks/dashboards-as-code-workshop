@@ -42,9 +42,9 @@ python main.py --manifests
 ```
 
 This will generate a YAML manifest for the test dashboard.
-The manifest is written under `./manifests/` by default and can be deployed
+The manifest is written under `./resources/` by default and can be deployed
 from the CLI:
 
 ```shell
-grafanactl resources push -d ./manifests
+grafanactl resources push
 ```

@@ -19,7 +19,7 @@ export class Client {
 
     public static withConfigFromEnv(env: Record<string, string>): Client {
         return new Client({
-            host: env['GRAFANA_HOST'] ?? 'localhost:3003',
+            host: env['GRAFANA_HOST'] ?? 'localhost:3000',
             user: env['GRAFANA_USER'] ?? 'admin',
             password: env['GRAFANA_PASSWORD'] ?? 'admin',
         });
@@ -27,7 +27,7 @@ export class Client {
 
     public async findOrCreateFolder(name: string): Promise<string> {
         const searchResponse = await fetch(this.url(`/api/search?type=dash-folder&query=${encodeURIComponent(name)}`), {
-            headers: {Authorization: this.authHeader()},
+            headers: { Authorization: this.authHeader() },
         }).then(response => response.json() as Promise<folder[]>);
 
         // The folder exists.
@@ -35,7 +35,7 @@ export class Client {
             return searchResponse[0].uid;
         }
 
-        const payload = {title: name};
+        const payload = { title: name };
         const reqInit = {
             method: 'POST',
             body: JSON.stringify(payload),
@@ -63,7 +63,7 @@ export class Client {
                 'Content-Type': 'application/json',
             },
         };
-        
+
         await fetch(this.url(`/api/dashboards/db`), reqInit);
     }
 

@@ -1,4 +1,4 @@
-# Hands-on lab: Grafana as code
+# Hands-on lab — Grafana as code: Build and deploy your dashboards at scale
 
 1. [Prerequisites](./prerequisites.md)
 2. [Concepts](./concepts.md.md)

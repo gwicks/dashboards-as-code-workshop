@@ -10,7 +10,7 @@ from src.grafana import Config as GrafanaConfig, Client as Grafana
 from src.manifests import Manifest
 
 
-MANIFESTS_DIR = "./manifests"
+MANIFESTS_DIR = "./resources"
 
 
 def print_development_dashboard():

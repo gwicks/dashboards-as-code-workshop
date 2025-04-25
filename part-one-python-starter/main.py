@@ -10,7 +10,7 @@ from src.grafana import Config as GrafanaConfig, Client as Grafana
 from src.manifests import Manifest
 
 
-MANIFESTS_DIR = "./manifests"
+MANIFESTS_DIR = "./resources"
 DASHBOARD_FOLDER_NAME = "Part one"
 
 

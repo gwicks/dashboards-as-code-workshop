@@ -3,7 +3,7 @@ import { Manifest } from "@grafana/grafana-foundation-sdk/resource";
 
 export const dashboardManifest = (folderUid: string, dashboard: Dashboard): Manifest => {
     return {
-        apiVersion: 'dashboard.grafana.app/v1alpha1',
+        apiVersion: 'dashboard.grafana.app/v1beta1',
         kind: 'Dashboard',
         metadata: {
             annotations: {

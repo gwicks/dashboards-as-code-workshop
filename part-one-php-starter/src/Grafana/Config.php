@@ -15,7 +15,7 @@ class Config
     public static function fromEnv(array $env): static
     {
         return new static(
-            grafanaHost: $env['GRAFANA_HOST'] ?? 'localhost:3003',
+            grafanaHost: $env['GRAFANA_HOST'] ?? 'localhost:3000',
             grafanaUser: $env['GRAFANA_USER'] ?? 'admin',
             grafanaPassword: $env['GRAFANA_PASSWORD'] ?? 'admin',
         );

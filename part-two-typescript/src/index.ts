@@ -7,7 +7,7 @@ import { dashboardForService } from './dashboard';
 import { Client } from './grafana';
 import { dashboardManifest } from './manifests';
 
-const manifestsDir = './manifests';
+const manifestsDir = './resources';
 
 const printDevelopmentDashboard = (): void => {
     const service = {
@@ -19,7 +19,7 @@ const printDevelopmentDashboard = (): void => {
     };
 
     const dashboard = dashboardForService(service);
-    
+
     const manifest = dashboardManifest('', dashboard.build());
     const manifestYaml = yaml.stringify(JSON.parse(JSON.stringify(manifest)));
     console.log(manifestYaml);
@@ -67,21 +67,21 @@ const fetchServicesAndGenerateManifests = async (): Promise<void> => {
     const deploy = process.argv.includes('--deploy');
     const manifests = process.argv.includes('--manifests');
     const help = process.argv.includes('--help') || process.argv.includes('-h');
-    
+
     if (help) {
         console.log('Usage:');
         console.log("\t--deploy\tFetch the list of services from the catalog and deploy a dashboard for each entry");
         console.log("\t--manifests\tFetch the list of services from the catalog and generate a dashboard manifest for each entry");
         process.exit(1);
     }
-    
+
     if (deploy) {
         // Fetch the list services from the catalog and deploy a dashboard for
         // each of them
         await fetchServicesAndDeploy();
         return;
     }
-    
+
     if (manifests) {
         // Fetch the list services from the catalog and generate a dashboard manifest
         // for each of them.

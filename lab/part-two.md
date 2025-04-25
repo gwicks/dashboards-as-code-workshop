@@ -38,66 +38,68 @@ README.
 > [!NOTE]
 > A fake service catalog is included as part of the Docker Compose stack.
 > It can be reached via:
+>
 > ```shell
 > curl http://localhost:8082/api/services
 > ```
 
 A [live example of the desired dashboard](
-http://localhost:3003/d/example-products-overview/part-two-products-service-overview)
+http://localhost:3000/d/example-products-overview/part-two-products-service-overview)
 is provisioned in Grafana.
 
 > [!TIP]
 > <details>
 > <summary>⤵️ Dashboard breakdown</summary>
-> 
->   * `Version` panel
->     * type: `stat`
->     * query: `app_infos{service="[service_name]"}`
->     * height: 4
->     * span: 4
->   * service description panel
->     * type: `text`
->     * height: 4
->     * span: 4
->   * `Logs volume` panel
+>
+> * `Version` panel
+>   * type: `stat`
+>   * query: `app_infos{service="[service_name]"}`
+>   * height: 4
+>   * span: 4
+> * service description panel
+>   * type: `text`
+>   * height: 4
+>   * span: 4
+> * `Logs volume` panel
+>   * type: `timeseries`
+>   * query: `sum by (level) (count_over_time({service="[service_name]", level=~"$logs_level"} |~ "$logs_filter" [$__auto]))`
+>   * height: 4
+>   * span: 16
+> * `gRPC` row
+>   * `gRPC Requests` panel
 >     * type: `timeseries`
->     * query: `sum by (level) (count_over_time({service="[service_name]", level=~"$logs_level"} |~ "$logs_filter" [$__auto]))`
->     * height: 4
->     * span: 16
->   * `gRPC` row
->     * `gRPC Requests` panel
->       * type: `timeseries`
->       * query: `rate(grpc_server_handled_total{service="[service_name]"}[$__rate_interval])`
->       * height: 8
->       * span: 12
->     * `gRPC Requests latencies` panel
->       * type: `heatmap`
->       * query: `sum(increase(grpc_server_handling_seconds_bucket{service="[service_name]"}[$__rate_interval])) by (le)`
->       * query format: `heatmap`
->       * height: 8
->       * span: 12
->     * `gRPC Logs` panel
->       * type: `logs`
->       * query: `{service="[service_name]", source="grpc", level=~"$logs_level"} |~ "$logs_filter"`
->       * height: 8
->       * span: 24
->   * `HTTP` row
->     * `HTTP Requests` panel
->       * type: `timeseries`
->       * query: `rate(http_requests_total{service="[service_name]"}[$__rate_interval])`
->       * height: 8
->       * span: 12
->     * `HTTP Requests latencies` panel
->       * type: `heatmap`
->       * query: `sum(increase(http_requests_duration_seconds_bucket{service="[service_name]"}[$__rate_interval])) by (le)`
->       * query format: `heatmap`
->       * height: 8
->       * span: 12
->     * `HTTP Logs` panel
->       * type: `logs`
->       * query: `{service="[service_name]", source="http", level=~"$logs_level"} |~ "$logs_filter"`
->       * height: 8
->       * span: 24
+>     * query: `rate(grpc_server_handled_total{service="[service_name]"}[$__rate_interval])`
+>     * height: 8
+>     * span: 12
+>   * `gRPC Requests latencies` panel
+>     * type: `heatmap`
+>     * query: `sum(increase(grpc_server_handling_seconds_bucket{service="[service_name]"}[$__rate_interval])) by (le)`
+>     * query format: `heatmap`
+>     * height: 8
+>     * span: 12
+>   * `gRPC Logs` panel
+>     * type: `logs`
+>     * query: `{service="[service_name]", source="grpc", level=~"$logs_level"} |~ "$logs_filter"`
+>     * height: 8
+>     * span: 24
+> * `HTTP` row
+>   * `HTTP Requests` panel
+>     * type: `timeseries`
+>     * query: `rate(http_requests_total{service="[service_name]"}[$__rate_interval])`
+>     * height: 8
+>     * span: 12
+>   * `HTTP Requests latencies` panel
+>     * type: `heatmap`
+>     * query: `sum(increase(http_requests_duration_seconds_bucket{service="[service_name]"}[$__rate_interval])) by (le)`
+>     * query format: `heatmap`
+>     * height: 8
+>     * span: 12
+>   * `HTTP Logs` panel
+>     * type: `logs`
+>     * query: `{service="[service_name]", source="http", level=~"$logs_level"} |~ "$logs_filter"`
+>     * height: 8
+>     * span: 24
+>
 > </details>
 
 It monitors a `products` service that is part of the fake services running via
@@ -113,8 +115,8 @@ Recommendations:
 * Start by getting acquainted with the codebase in `./part-two-[language]-starter`
 * Re-use the *common functions* defined in part one
 * Focus on one panel at a time
-* Use the [example dashboard](http://localhost:3003/d/example-products-overview/example-products-service-overview)
-  to explore each panel's options and find their equivalent in the [Foundation 
+* Use the [example dashboard](http://localhost:3000/d/example-products-overview/example-products-service-overview)
+  to explore each panel's options and find their equivalent in the [Foundation
   SDK reference](https://grafana.github.io/grafana-foundation-sdk/v11.4.x+cog-v0.0.x/go/Reference/)
 * Preview your changes locally as often as you want, deploy when you're ready
 * Describe each panel in its own function

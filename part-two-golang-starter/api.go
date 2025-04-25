@@ -14,7 +14,7 @@ import (
 
 func DashboardManifest(folderUid string, dash dashboard.Dashboard) resource.Manifest {
 	return resource.Manifest{
-		ApiVersion: "dashboard.grafana.app/v1alpha1",
+		ApiVersion: "dashboard.grafana.app/v1beta1",
 		Kind:       "Dashboard",
 		Metadata: resource.Metadata{
 			Annotations: map[string]string{

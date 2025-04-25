@@ -7,7 +7,7 @@ import { Client } from './grafana';
 import { dashboardManifest } from './manifests';
 import { DashboardBuilder } from '@grafana/grafana-foundation-sdk/dashboard';
 
-const manifestsDir = './manifests';
+const manifestsDir = './resources';
 const dashboardFolderName = 'Part one';
 
 const deployDashboard = async (dashboard: DashboardBuilder): Promise<void> => {
@@ -41,7 +41,7 @@ const generateManifest = async (dashboard: DashboardBuilder): Promise<void> => {
     const deploy = process.argv.includes('--deploy');
     const manifests = process.argv.includes('--manifests');
     const help = process.argv.includes('--help') || process.argv.includes('-h');
-    
+
     if (help) {
         console.log('Usage:');
         console.log("\t--deploy\tGenerate and deploy the test dashboard directly to a Grafana instance");
@@ -56,14 +56,14 @@ const generateManifest = async (dashboard: DashboardBuilder): Promise<void> => {
         await deployDashboard(dashboard);
         return;
     }
-    
+
     if (manifests) {
         // Generate a dashboard manifest for the test dashboard and write it to disk.
         await generateManifest(dashboard);
         return;
     }
 
-	// By default: print the test dashboard to stdout.
+    // By default: print the test dashboard to stdout.
     const manifest = dashboardManifest('', dashboard.build());
     const manifestYaml = yaml.stringify(JSON.parse(JSON.stringify(manifest)));
     console.log(manifestYaml);

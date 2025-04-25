@@ -13,7 +13,7 @@ import (
 
 type config struct {
 	CatalogEndpoint string `env:"CATALOG_ENDPOINT" envDefault:"http://localhost:8082/api/services"`
-	GrafanaHost     string `env:"GRAFANA_HOST" envDefault:"localhost:3003"`
+	GrafanaHost     string `env:"GRAFANA_HOST" envDefault:"localhost:3000"`
 	GrafanaUser     string `env:"GRAFANA_USER" envDefault:"admin"`
 	GrafanaPassword string `env:"GRAFANA_PASSWORD" envDefault:"admin"`
 }
@@ -26,7 +26,7 @@ func main() {
 
 	deploy := false
 	manifests := false
-	manifestsDirectory := "./manifests"
+	manifestsDirectory := "./resources"
 	flag.BoolVar(&deploy, "deploy", deploy, "Fetch the list of services from the catalog and deploy a dashboard for each entry")
 	flag.BoolVar(&manifests, "manifests", manifests, "Fetch the list of services from the catalog and generate a dashboard manifest for each entry")
 	flag.StringVar(&manifestsDirectory, "manifests-directory", manifestsDirectory, "Directory in which the manifests will be generated")

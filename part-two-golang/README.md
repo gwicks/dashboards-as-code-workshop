@@ -44,9 +44,9 @@ go run *.go -manifests
 
 This will call the service catalog and generate a dashboard manifest for each
 service it describes.
-These manifests are written under `./manifests/` by default and can be deployed
+These manifests are written under `./resources/` by default and can be deployed
 from the CLI:
 
 ```shell
-grafanactl resources push -d ./manifests
+grafanactl resources push
 ```

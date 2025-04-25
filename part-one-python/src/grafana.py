@@ -20,7 +20,7 @@ class Config:
     @classmethod
     def from_env(cls) -> typing.Self:
         return cls(
-            host=os.environ.get("GRAFANA_HOST", "localhost:3003"),
+            host=os.environ.get("GRAFANA_HOST", "localhost:3000"),
             user=os.environ.get("GRAFANA_USER", "admin"),
             password=os.environ.get("GRAFANA_PASSWORD", "admin"),
         )

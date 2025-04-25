@@ -9,7 +9,7 @@ use App\Grafana\Manifest;
 
 require_once __DIR__.'/vendor/autoload.php';
 
-define('MANIFESTS_DIR', './manifests');
+define('MANIFESTS_DIR', './resources');
 
 $flags = getopt('', [
     'deploy',

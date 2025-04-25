@@ -8,7 +8,7 @@ docker compose -f docker-compose.yaml up --watch --build
 
 `--watch` will watch for changes in `./dummy/` and `./service-catalog`, and rebuild+restart the services when needed.
 
-The Grafana instance is accessible at `http://localhost:3003` (credentials: `admin` / `admin`)
+The Grafana instance is accessible at `http://localhost:3000` (anonymous usage is enabled)
 
 ## Service catalog
 

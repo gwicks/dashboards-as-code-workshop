@@ -2,15 +2,16 @@
 
 For the purposes of this workshop, an entire stack is provided with:
 
- * [Grafana](https://grafana.com/grafana/)
- * [Alloy](https://grafana.com/docs/alloy/latest/)
- * [Loki](https://grafana.com/products/cloud/logs/)
- * [Prometheus](https://prometheus.io/)
+* [Grafana](https://grafana.com/grafana/)
+* [Alloy](https://grafana.com/docs/alloy/latest/)
+* [Loki](https://grafana.com/products/cloud/logs/)
+* [Prometheus](https://prometheus.io/)
 
 To run it, you will need [Docker](https://docs.docker.com/engine/) and [Docker Compose](https://docs.docker.com/compose/).
 
 > [!TIP]
 > Verify that Docker is ready:
+>
 > ```shell
 > docker ps
 > docker compose ps
@@ -63,7 +64,7 @@ docker compose -f docker-compose.yaml up --build
 ```
 
 > [!TIP]
-> Verify that the Grafana instance is accessible at [`http://localhost:3003`](http://localhost:3003)
+> Verify that the Grafana instance is accessible at [`http://localhost:3000`](http://localhost:3000)
 >
 > Credentials: `admin` / `admin`
 
@@ -71,25 +72,25 @@ docker compose -f docker-compose.yaml up --build
 
 If you are unable to run the workshop locally on your machine, you can use [CodeSandbox.io](https://codesandbox.io), a browser-based virtual development environment.
 
-- First, sign up for a free CodeSandbox account and login.
+* First, sign up for a free CodeSandbox account and login.
 
-- Once done, click on **Import** at the top right to begin importing the GitHub repository.
+* Once done, click on **Import** at the top right to begin importing the GitHub repository.
 
-- Click on **Find by URL** and enter the URL of your *forked repository*.
+* Click on **Find by URL** and enter the URL of your *forked repository*.
 
-- Click on the title of your repository to open it in a new code sandbox environment.
+* Click on the title of your repository to open it in a new code sandbox environment.
 
 Once you've opened the repository in CodeSandbox, you can start the stack by:
 
-- Clicking on **Create Terminal** undernearth the **Shared Terminals** section in the left side panel.
+* Clicking on **Create Terminal** undernearth the **Shared Terminals** section in the left side panel.
 
-- In the Terminal that opens, run the following:
+* In the Terminal that opens, run the following:
 
 ```shell
 docker compose -f docker-compose.yaml up --build
 ```
 
-You can verify that Grafana is up and running by clicking **Open Externally** on the popup that appears which says "Port 3003 has been opened".
+You can verify that Grafana is up and running by clicking **Open Externally** on the popup that appears which says "Port 3000 has been opened".
 
 The rest of the instructions in these docs should work the same within the CodeSandbox.io environment.
 
@@ -111,10 +112,8 @@ Follow the [installation instructions](https://github.com/grafana/grafanactl/blo
 With `grafanactl` installed, configure it to connect to the lab's Grafana instance:
 
 ```shell
-grafanactl config set contexts.lab.grafana.server http://localhost:3003
+grafanactl config set contexts.lab.grafana.server http://localhost:3000
 grafanactl config set contexts.lab.grafana.org-id 1
-grafanactl config set contexts.lab.grafana.user admin
-grafanactl config set contexts.lab.grafana.password admin
 grafanactl config use-context lab
 ```
 

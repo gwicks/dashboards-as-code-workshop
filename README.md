@@ -1,4 +1,4 @@
-# Hands-on lab: Grafana as code
+# Hands-on lab — Grafana as code: Build and deploy your dashboards at scale
 
 ## Attendees
 
