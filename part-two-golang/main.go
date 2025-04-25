@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"flag"
 	"fmt"
 	"log"
@@ -8,7 +9,6 @@ import (
 	"path/filepath"
 
 	"github.com/caarlos0/env/v11"
-	"github.com/goccy/go-yaml"
 )
 
 type config struct {
@@ -84,13 +84,13 @@ func fetchServicesAndGenerateManifests(cfg config, outputDir string) error {
 		}
 
 		manifest := DashboardManifest(folderUid, serviceDashboard)
-		manifestYaml, err := yaml.MarshalWithOptions(manifest, yaml.UseJSONMarshaler())
+		manifestJSON, err := json.MarshalIndent(manifest, "", "  ")
 		if err != nil {
 			return err
 		}
 
-		filename := *serviceDashboard.Uid + ".yaml"
-		if err := os.WriteFile(filepath.Join(outputDir, filename), manifestYaml, 0666); err != nil {
+		filename := *serviceDashboard.Uid + ".json"
+		if err := os.WriteFile(filepath.Join(outputDir, filename), manifestJSON, 0666); err != nil {
 			return err
 		}
 	}
@@ -133,10 +133,10 @@ func printDevelopmentDashboard(service Service) {
 	}
 
 	manifest := DashboardManifest("", serviceDashboard)
-	manifestYaml, err := yaml.MarshalWithOptions(manifest, yaml.UseJSONMarshaler())
+	manifestJSON, err := json.MarshalIndent(manifest, "", "  ")
 	if err != nil {
 		panic(err)
 	}
 
-	fmt.Println(string(manifestYaml))
+	fmt.Println(string(manifestJSON))
 }

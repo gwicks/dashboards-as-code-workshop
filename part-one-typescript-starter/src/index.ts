@@ -1,6 +1,5 @@
 import fs from 'fs';
 import path from 'path';
-import yaml from 'yaml';
 
 import { exampleDashboard } from './dashboard';
 import { Client } from './grafana';
@@ -29,10 +28,9 @@ const generateManifest = async (dashboard: DashboardBuilder): Promise<void> => {
 
     const folderUid = await grafana.findOrCreateFolder(dashboardFolderName);
     const manifest = dashboardManifest(folderUid, builtDashboard);
-    const manifestYaml = yaml.stringify(JSON.parse(JSON.stringify(manifest)));
 
-    const filename = path.join(manifestsDir, `${builtDashboard.uid!}.yaml`);
-    fs.writeFileSync(filename, manifestYaml);
+    const filename = path.join(manifestsDir, `${builtDashboard.uid!}.json`);
+    fs.writeFileSync(filename, JSON.stringify(manifest, null, 2));
 
     console.log(`manifest generated in ${manifestsDir}`);
 };
@@ -65,6 +63,5 @@ const generateManifest = async (dashboard: DashboardBuilder): Promise<void> => {
 
     // By default: print the test dashboard to stdout.
     const manifest = dashboardManifest('', dashboard.build());
-    const manifestYaml = yaml.stringify(JSON.parse(JSON.stringify(manifest)));
-    console.log(manifestYaml);
+    console.log(JSON.stringify(manifest, null, 2));
 })();

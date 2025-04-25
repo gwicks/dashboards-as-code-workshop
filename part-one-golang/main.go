@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"flag"
 	"fmt"
 	"log"
@@ -8,7 +9,6 @@ import (
 	"path/filepath"
 
 	"github.com/caarlos0/env/v11"
-	"github.com/goccy/go-yaml"
 	"github.com/grafana/grafana-foundation-sdk/go/dashboard"
 )
 
@@ -72,13 +72,13 @@ func generateManifest(cfg config, outputDir string, dashboard dashboard.Dashboar
 	}
 
 	manifest := DashboardManifest(folderUid, dashboard)
-	manifestYaml, err := yaml.MarshalWithOptions(manifest, yaml.UseJSONMarshaler())
+	manifestJSON, err := json.MarshalIndent(manifest, "", "  ")
 	if err != nil {
 		return err
 	}
 
-	filename := *dashboard.Uid + ".yaml"
-	if err := os.WriteFile(filepath.Join(outputDir, filename), manifestYaml, 0666); err != nil {
+	filename := *dashboard.Uid + ".json"
+	if err := os.WriteFile(filepath.Join(outputDir, filename), manifestJSON, 0666); err != nil {
 		return err
 	}
 
@@ -103,10 +103,10 @@ func deployDashboard(cfg config, dashboard dashboard.Dashboard) error {
 
 func printDashboard(dashboard dashboard.Dashboard) {
 	manifest := DashboardManifest("", dashboard)
-	manifestYaml, err := yaml.MarshalWithOptions(manifest, yaml.UseJSONMarshaler())
+	manifestJSON, err := json.MarshalIndent(manifest, "", "  ")
 	if err != nil {
 		panic(err)
 	}
 
-	fmt.Println(string(manifestYaml))
+	fmt.Println(string(manifestJSON))
 }

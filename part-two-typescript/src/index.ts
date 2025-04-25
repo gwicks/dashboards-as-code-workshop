@@ -1,6 +1,5 @@
 import fs from 'fs';
 import path from 'path';
-import yaml from 'yaml';
 
 import { Catalog } from './catalog';
 import { dashboardForService } from './dashboard';
@@ -21,8 +20,7 @@ const printDevelopmentDashboard = (): void => {
     const dashboard = dashboardForService(service);
 
     const manifest = dashboardManifest('', dashboard.build());
-    const manifestYaml = yaml.stringify(JSON.parse(JSON.stringify(manifest)));
-    console.log(manifestYaml);
+    console.log(JSON.stringify(manifest, null, 2));
 };
 
 const fetchServicesAndDeploy = async (): Promise<void> => {
@@ -54,10 +52,8 @@ const fetchServicesAndGenerateManifests = async (): Promise<void> => {
         const folderUid = await grafana.findOrCreateFolder(service.name);
 
         const manifest = dashboardManifest(folderUid, dashboard);
-        const manifestYaml = yaml.stringify(JSON.parse(JSON.stringify(manifest)));
-
-        const filename = path.join(manifestsDir, `${dashboard.uid!}.yaml`);
-        fs.writeFileSync(filename, manifestYaml);
+        const filename = path.join(manifestsDir, `${dashboard.uid!}.json`);
+        fs.writeFileSync(filename, JSON.stringify(manifest, null, 2));
     }
 
     console.log(`${services.length} manifests generated in ${manifestsDir}`);
