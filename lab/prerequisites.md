@@ -65,8 +65,6 @@ docker compose -f docker-compose.yaml up --build
 
 > [!TIP]
 > Verify that the Grafana instance is accessible at [`http://localhost:3000`](http://localhost:3000)
->
-> Credentials: `admin` / `admin`
 
 ## Working with the Lab Repository (CodeSandbox.io)
 
@@ -94,9 +92,10 @@ You can verify that Grafana is up and running by clicking **Open Externally** on
 
 The rest of the instructions in these docs should work the same within the CodeSandbox.io environment.
 
-## Install `grafanactl`
+## Install the Grafana CLI
 
-[grafanactl](https://github.com/grafana/grafanactl) is a CLI tool used to manage Grafana resources.
+[Grafana CLI](https://grafana.github.io/grafanactl/) (*grafanactl*) is a
+command-line tool designed to simplify interaction with Grafana instances.
 
 Follow the [installation instructions](https://github.com/grafana/grafanactl/blob/main/docs/installation.md#prebuilt-binaries) in its documentation.
 
