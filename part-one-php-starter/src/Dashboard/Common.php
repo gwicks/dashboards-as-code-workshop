@@ -37,6 +37,7 @@ class Common
         return (new Text\PanelBuilder())
             // TODO: configure default options for text panels
             //
+            //  * `content` set to $content
             //  * `mode` set to `markdown`
             //
             // See: https://grafana.github.io/grafana-foundation-sdk/v11.6.x+cog-v0.0.x/php/Reference/text/builder-PanelBuilder/

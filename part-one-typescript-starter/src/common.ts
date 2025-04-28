@@ -20,6 +20,7 @@ export const textPanel = (_content: string): text.PanelBuilder => {
     return new text.PanelBuilder()
         // TODO: configure default options for text panels
         //
+        //  * `content` set to content
         //  * `mode` set to `markdown`
         //
         // See: https://grafana.github.io/grafana-foundation-sdk/v11.6.x+cog-v0.0.x/typescript/Reference/text/builder-PanelBuilder/
@@ -52,51 +53,51 @@ export const logPanel = (): logs.PanelBuilder => {
         //  * `enableLogDetails` set to `true`
         //
         // See: https://grafana.github.io/grafana-foundation-sdk/v11.6.x+cog-v0.0.x/typescript/Reference/logs/builder-PanelBuilder/
-    ;
+        ;
 };
 
 // Creates a Prometheus query pre-configured for range vectors.
 export const prometheusQuery = (expression: string): prometheus.DataqueryBuilder => {
-	return new prometheus.DataqueryBuilder()
+    return new prometheus.DataqueryBuilder()
         .expr(expression)
         .range()
         .format(prometheus.PromQueryFormat.TimeSeries)
         .legendFormat('__auto')
-    ;
+        ;
 };
 
 // Creates a Prometheus query pre-configured for instant vectors and table data
 // formatting.
 export const instantPrometheusQuery = (expression: string): prometheus.DataqueryBuilder => {
-	return new prometheus.DataqueryBuilder()
+    return new prometheus.DataqueryBuilder()
         .expr(expression)
         .instant()
         .format(prometheus.PromQueryFormat.Table)
         .legendFormat('__auto')
-    ;
+        ;
 };
 
 // Creates a Loki query pre-configured for range vectors.
 export const lokiQuery = (expression: string): loki.DataqueryBuilder => {
-	return new loki.DataqueryBuilder()
+    return new loki.DataqueryBuilder()
         .expr(expression)
         .queryType('range')
         .legendFormat('__auto')
-    ;
+        ;
 };
 
 // Returns a reference to the Prometheus datasource used by the workshop stack.
 export const prometheusDatasourceRef = (): DataSourceRef => {
-	return {
-		type: 'prometheus',
-		uid:  'prometheus',
-	};
+    return {
+        type: 'prometheus',
+        uid: 'prometheus',
+    };
 };
 
 // Returns a reference to the Loki datasource used by the workshop stack.
 export const lokiDatasourceRef = (): DataSourceRef => {
-	return {
-		type: 'loki',
-		uid:  'loki',
-	};
+    return {
+        type: 'loki',
+        uid: 'loki',
+    };
 };
