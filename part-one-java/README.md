@@ -30,7 +30,7 @@ The [`Common.java`](./src/main/java/lab/Common.java) file is where "base functio
 ## Deploying the dashboards
 
 ```shell
-go run *.go -manifests
+gradle run --args="--manifests"
 ```
 
 This will generate a YAML manifest for the test dashboard.
