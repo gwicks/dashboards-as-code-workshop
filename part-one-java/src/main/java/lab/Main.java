@@ -64,7 +64,7 @@ public class Main {
 
         Client client = Client.fromEnv();
         String folderUid = client.findOrCreateFolder(DASHBOARD_FOLDER_NAME);
-        com.grafana.foundation.resource.Manifest manifest = Manifest.dashboard("", dashboard);
+        com.grafana.foundation.resource.Manifest manifest = Manifest.dashboard(folderUid, dashboard);
 
         FileWriter manifestWriter = new FileWriter(Path.of(MANIFESTS_DIR, dashboard.uid+".json").toString());
         manifestWriter.write(manifest.toJSON());

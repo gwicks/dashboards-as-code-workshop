@@ -2,6 +2,8 @@ package lab;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.grafana.foundation.dashboard.*;
+import lab.catalog.Catalog;
+import lab.catalog.Service;
 import lab.grafana.Client;
 import lab.grafana.Manifest;
 
@@ -13,7 +15,6 @@ import java.util.List;
 
 public class Main {
     private final static String MANIFESTS_DIR = "./resources";
-    private final static String DASHBOARD_FOLDER_NAME = "Part one";
 
     public static void main(String[] args) throws IOException, InterruptedException {
         boolean manifests = List.of(args).contains("--manifests");
@@ -27,34 +28,38 @@ public class Main {
             return;
         }
 
-        Dashboard dashboard = Playground.dashboard().build();
-
         // Generate a dashboard manifest for the test dashboard and write it to disk.
         if (manifests) {
-            generateManifest(dashboard);
+            generateManifests();
             return;
         }
 
         // Deploy the test dashboard directly to a Grafana instance.
         if (deploy) {
-            deployDashboard(dashboard);
+            deployDashboards();
             return;
         }
 
         // By default, print the test dashboard to stdout.
-        printDevelopmentDashboard(dashboard);
+        printDevelopmentDashboard();
     }
 
-    private static void deployDashboard(Dashboard dashboard) throws IOException, InterruptedException {
+    private static void deployDashboards() throws IOException, InterruptedException {
         Client client = Client.fromEnv();
-        String folderUid = client.findOrCreateFolder(DASHBOARD_FOLDER_NAME);
+        Catalog catalog = Catalog.fromEnv();
+        Service[] services = catalog.services();
 
-        client.persistDashboard(folderUid, dashboard);
+        for (Service service : services) {
+            Dashboard dashboard = Overview.forService(service).build();
+
+            String folderUid = client.findOrCreateFolder(service.name);
+            client.persistDashboard(folderUid, dashboard);
+        }
 
         System.out.println("Dashboard deployed");
     }
 
-    private static void generateManifest(Dashboard dashboard) throws IOException, InterruptedException {
+    private static void generateManifests() throws IOException, InterruptedException {
         File manifestsDir = new File(MANIFESTS_DIR);
 
         if (!manifestsDir.exists()) {
@@ -63,17 +68,32 @@ public class Main {
         }
 
         Client client = Client.fromEnv();
-        String folderUid = client.findOrCreateFolder(DASHBOARD_FOLDER_NAME);
-        com.grafana.foundation.resource.Manifest manifest = Manifest.dashboard(folderUid, dashboard);
+        Catalog catalog = Catalog.fromEnv();
+        Service[] services = catalog.services();
 
-        FileWriter manifestWriter = new FileWriter(Path.of(MANIFESTS_DIR, dashboard.uid+".json").toString());
-        manifestWriter.write(manifest.toJSON());
-        manifestWriter.close();
+        for (Service service : services) {
+            Dashboard dashboard = Overview.forService(service).build();
 
-        System.out.println("Manifest generated in "+MANIFESTS_DIR);
+            String folderUid = client.findOrCreateFolder(service.name);
+            com.grafana.foundation.resource.Manifest manifest = Manifest.dashboard(folderUid, dashboard);
+
+            FileWriter manifestWriter = new FileWriter(Path.of(MANIFESTS_DIR, dashboard.uid+".json").toString());
+            manifestWriter.write(manifest.toJSON());
+            manifestWriter.close();
+        }
+
+        System.out.println(services.length + " manifests generated in "+MANIFESTS_DIR);
     }
 
-    private static void printDevelopmentDashboard(Dashboard dashboard) throws JsonProcessingException {
+    private static void printDevelopmentDashboard() throws JsonProcessingException {
+        Service service = new Service();
+        service.name = "products";
+        service.description = "A service related to products";
+        service.hasGrpc = true;
+        service.hasHttp = true;
+        service.repositoryUrl = "http://github.com/org/products-service";
+
+        Dashboard dashboard = Overview.forService(service).build();
         com.grafana.foundation.resource.Manifest manifest = Manifest.dashboard("", dashboard);
 
         System.out.println(manifest.toJSON());
