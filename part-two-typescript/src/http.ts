@@ -2,6 +2,7 @@ import * as heatmap from '@grafana/grafana-foundation-sdk/heatmap';
 import * as logs from '@grafana/grafana-foundation-sdk/logs';
 import * as timeseries from '@grafana/grafana-foundation-sdk/timeseries';
 import * as prometheus from '@grafana/grafana-foundation-sdk/prometheus';
+import * as units from '@grafana/grafana-foundation-sdk/units';
 import { Service } from './catalog';
 import {
     heatmapPanel,
@@ -15,7 +16,7 @@ import {
 export const httpRequestsTimeseries = (service: Service): timeseries.PanelBuilder => {
     return timeseriesPanel()
         .title('HTTP Requests')
-        .unit('reqps')
+        .unit(units.RequestsPerSecond)
         .withTarget(
             prometheusQuery(`rate(http_requests_total{service="${service.name}"}[$__rate_interval])`)
                 .legendFormat('{{code}} - {{ method }} {{ path }}')

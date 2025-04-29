@@ -1,5 +1,6 @@
 from grafana_foundation_sdk.builders import heatmap, logs, timeseries
 from grafana_foundation_sdk.models.prometheus import PromQueryFormat
+from grafana_foundation_sdk.models.units import RequestsPerSecond
 
 from .catalog import Service
 from .common import (
@@ -16,7 +17,7 @@ def requests_timeseries(service: Service) -> timeseries.Panel:
     return (
         timeseries_panel()
         .title("HTTP Requests")
-        .unit("reqps")
+        .unit(RequestsPerSecond)
         .with_target(
             prometheus_query(
                 'rate(http_requests_total{service="%s"}[$__rate_interval])'

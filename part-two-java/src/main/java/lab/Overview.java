@@ -3,6 +3,7 @@ package lab;
 import com.grafana.foundation.common.*;
 import com.grafana.foundation.dashboard.*;
 import com.grafana.foundation.prometheus.PromQueryFormat;
+import com.grafana.foundation.units.Constants;
 import lab.catalog.Service;
 
 import java.util.List;
@@ -114,7 +115,7 @@ public class Overview {
 
         return timeseriesPanel().
                 title("gRPC Requests").
-                unit("reqps").
+                unit(Constants.RequestsPerSecond).
                 withTarget(prometheusQuery(query).legendFormat("{{ grpc_method }} – {{ grpc_code }}")).
                 datasource(prometheusDatasourceRef());
     }
@@ -141,7 +142,7 @@ public class Overview {
 
         return timeseriesPanel().
                 title("HTTP Requests").
-                unit("reqps").
+                unit(Constants.RequestsPerSecond).
                 withTarget(prometheusQuery(query).legendFormat("{{code}} – {{ method }} {{ path }}")).
                 datasource(prometheusDatasourceRef());
     }

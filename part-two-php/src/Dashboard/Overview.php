@@ -27,6 +27,7 @@ use Grafana\Foundation\Prometheus\PromQueryFormat;
 use Grafana\Foundation\Stat;
 use Grafana\Foundation\Text;
 use Grafana\Foundation\Timeseries;
+use Grafana\Foundation\Units\Constants as Units;
 
 class Overview
 {
@@ -138,7 +139,7 @@ class Overview
     {
         return Common::timeseriesPanel()
             ->title('gRPC Requests')
-            ->unit('reqps')
+            ->unit(Units::REQUESTS_PER_SECOND)
             ->withTarget(
                 Common::prometheusQuery("rate(grpc_server_handled_total{service=\"$service->name\"}[\$__rate_interval])")
                     ->legendFormat('{{ grpc_method }} – {{ grpc_code }}')
@@ -173,7 +174,7 @@ class Overview
     {
         return Common::timeseriesPanel()
             ->title('HTTP Requests')
-            ->unit('reqps')
+            ->unit(Units::REQUESTS_PER_SECOND)
             ->withTarget(
                 Common::prometheusQuery("rate(http_requests_total{service=\"$service->name\"}[\$__rate_interval])")
                     ->legendFormat('{{code}} – {{ method }} {{ path }}')

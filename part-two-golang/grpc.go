@@ -7,12 +7,13 @@ import (
 	"github.com/grafana/grafana-foundation-sdk/go/logs"
 	"github.com/grafana/grafana-foundation-sdk/go/prometheus"
 	"github.com/grafana/grafana-foundation-sdk/go/timeseries"
+	"github.com/grafana/grafana-foundation-sdk/go/units"
 )
 
 func grpcRequestsTimeseries(service Service) *timeseries.PanelBuilder {
 	return timeseriesPanel().
 		Title("gRPC Requests").
-		Unit("reqps").
+		Unit(units.RequestsPerSecond).
 		WithTarget(prometheusQuery(fmt.Sprintf("rate(grpc_server_handled_total{service=\"%s\"}[$__rate_interval])", service.Name)).
 			LegendFormat("{{ grpc_method }} – {{ grpc_code }}"),
 		).

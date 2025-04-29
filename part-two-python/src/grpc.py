@@ -1,5 +1,6 @@
 from grafana_foundation_sdk.builders import heatmap, logs, timeseries
 from grafana_foundation_sdk.models.prometheus import PromQueryFormat
+from grafana_foundation_sdk.models.units import RequestsPerSecond
 
 from .catalog import Service
 from .common import (
@@ -16,7 +17,7 @@ def requests_timeseries(service: Service) -> timeseries.Panel:
     return (
         timeseries_panel()
         .title("gRPC Requests")
-        .unit("reqps")
+        .unit(RequestsPerSecond)
         .with_target(
             prometheus_query(
                 'rate(grpc_server_handled_total{service="%s"}[$__rate_interval])'
@@ -31,7 +32,6 @@ def latencies_heatmap(service: Service) -> heatmap.Panel:
     return (
         heatmap_panel()
         .title("gRPC Requests latencies")
-        .unit("reqps")
         .with_target(
             prometheus_query(
                 'sum(increase(grpc_server_handling_seconds_bucket{service="%s"}[$__rate_interval])) by (le)'

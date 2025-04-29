@@ -7,12 +7,13 @@ import (
 	"github.com/grafana/grafana-foundation-sdk/go/logs"
 	"github.com/grafana/grafana-foundation-sdk/go/prometheus"
 	"github.com/grafana/grafana-foundation-sdk/go/timeseries"
+	"github.com/grafana/grafana-foundation-sdk/go/units"
 )
 
 func httpRequestsTimeseries(service Service) *timeseries.PanelBuilder {
 	return timeseriesPanel().
 		Title("HTTP Requests").
-		Unit("reqps").
+		Unit(units.RequestsPerSecond).
 		WithTarget(prometheusQuery(fmt.Sprintf("rate(http_requests_total{service=\"%s\"}[$__rate_interval])", service.Name)).
 			LegendFormat("{{code}} - {{ method }} {{ path }}"),
 		).
