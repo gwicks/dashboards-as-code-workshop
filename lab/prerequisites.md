@@ -111,9 +111,8 @@ Follow the [installation instructions](https://github.com/grafana/grafanactl/blo
 With `grafanactl` installed, configure it to connect to the lab's Grafana instance:
 
 ```shell
-grafanactl config set contexts.lab.grafana.server http://localhost:3000
-grafanactl config set contexts.lab.grafana.org-id 1
-grafanactl config use-context lab
+grafanactl config set contexts.default.grafana.server http://localhost:3000
+grafanactl config set contexts.default.grafana.org-id 1
 ```
 
 > [!TIP]
