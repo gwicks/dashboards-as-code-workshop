@@ -46,3 +46,9 @@ from the CLI:
 ```shell
 grafanactl resources push
 ```
+
+## Useful resources
+
+* [Example dashboards](https://github.com/grafana/grafana-foundation-sdk/tree/main/examples/typescript) built with the Foundation SDK
+* [Foundation SDK how-to guides](https://grafana.github.io/grafana-foundation-sdk/v11.6.x+cog-v0.0.x/typescript/How-To/building-a-dashboard/)
+* [Foundation SDK reference](https://grafana.github.io/grafana-foundation-sdk/v11.6.x+cog-v0.0.x/typescript/Reference/)

@@ -17,7 +17,7 @@ It will generate a single dashboard and print its representation to stdout.
 This mode is meant for development, to be used alongside `grafanactl`:
 
 ```shell
-grafanactl resources serve --script 'go run *.go' --watch .
+grafanactl resources serve --script 'go run .' --watch .
 ```
 
 ## Where should I start?
@@ -37,7 +37,7 @@ The [`common.go`](./common.go) file is where "base functions" for each panel typ
 ## Deploying the dashboards
 
 ```shell
-go run *.go -manifests
+go run . -manifests
 ```
 
 This will generate a YAML manifest for the test dashboard.
@@ -47,3 +47,9 @@ from the CLI:
 ```shell
 grafanactl resources push
 ```
+
+## Useful resources
+
+* [Example dashboards](https://github.com/grafana/grafana-foundation-sdk/tree/main/examples/go) built with the Foundation SDK
+* [Foundation SDK how-to guides](https://grafana.github.io/grafana-foundation-sdk/v11.6.x+cog-v0.0.x/go/How-To/building-a-dashboard/)
+* [Foundation SDK reference](https://grafana.github.io/grafana-foundation-sdk/v11.6.x+cog-v0.0.x/go/Reference/)

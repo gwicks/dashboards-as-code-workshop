@@ -40,3 +40,9 @@ from the CLI:
 ```shell
 grafanactl resources push
 ```
+
+## Useful resources
+
+* [Example dashboards](https://github.com/grafana/grafana-foundation-sdk/tree/main/examples/java) built with the Foundation SDK
+* [Foundation SDK how-to guides](https://grafana.github.io/grafana-foundation-sdk/v11.6.x+cog-v0.0.x/java/How-To/building-a-dashboard/)
+* [Foundation SDK reference](https://grafana.github.io/grafana-foundation-sdk/v11.6.x+cog-v0.0.x/java/Reference/)
