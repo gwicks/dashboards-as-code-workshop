@@ -2,7 +2,7 @@ name: workshop
 
 services:
   grafana:
-    image: grafana/grafana:main@sha256:b0d92f4e19372abcf5431348803b8cf2d6f4b16ce280a22258fac6d00bec9a71
+    image: ${REGISTRY:-docker.io}/grafana/grafana:main@sha256:175238e39794186a34e5f9b67aa7f27a1834c5a0d6676139af67874fef598c0b
     restart: unless-stopped
     ports:
       - "3000:3000"
@@ -15,13 +15,13 @@ services:
       - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
 
   prometheus:
-    image: prom/prometheus:v3.1.0
+    image: ${REGISTRY:-docker.io}/prom/prometheus:v3.1.0
     volumes:
       - ./config/prometheus.yaml:/etc/prometheus/prometheus.yml
     command: "--log.level=warn --config.file=/etc/prometheus/prometheus.yml --storage.tsdb.path=/prometheus"
 
   loki:
-    image: grafana/loki:3.4
+    image: ${REGISTRY:-docker.io}/grafana/loki:3.4
     ports:
       - "3100:3100"
     volumes:
@@ -29,7 +29,7 @@ services:
     command: -config.file=/etc/loki/loki.yml
 
   alloy:
-    image: grafana/alloy:v1.7.1
+    image: ${REGISTRY:-docker.io}/grafana/alloy:v1.7.1
     ports:
       - "12345:12345"
     volumes:
