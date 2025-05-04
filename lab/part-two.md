@@ -151,6 +151,10 @@ Recommendations:
 * Preview your changes locally as often as you want, deploy when you're ready
 * Describe each panel in its own function
 
+> [!TIP]
+> Make sure you go through the instructions found in each starter kit
+> `README.md` file.
+
 ## Deploying
 
 Instructions on deploying the dashboards are included in each skeleton's README.

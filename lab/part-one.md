@@ -18,8 +18,9 @@ A skeleton codebase is provided to get you started: `./part-one-[language]-start
 
 It contains the boilerplate code needed to write and generate dashboards locally.
 
-Instructions specific to your chosen language can be found in each starter kit
-README.
+> [!TIP]
+> Instructions specific to your chosen language can be found in each starter kit
+> README.
 
 ## Guidelines
 
@@ -88,6 +89,10 @@ Recommendations:
   to explore each panel's options and find their equivalent in the [Foundation
   SDK reference](https://grafana.github.io/grafana-foundation-sdk/v11.4.x+cog-v0.0.x/go/Reference/)
 * Preview your changes locally as often as you want, deploy when you're ready
+
+> [!TIP]
+> Make sure you go through the instructions found in each starter kit
+> `README.md` file.
 
 ## Deploying
 
