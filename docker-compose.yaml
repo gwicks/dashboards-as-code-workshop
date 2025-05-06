@@ -45,10 +45,6 @@ services:
     build: ./dummy/
     ports:
       - "8081:8080"
-    develop:
-      watch:
-        - action: rebuild
-          path: ./dummy
     volumes:
       - tmp-logs:/tmp/app-logs
 
@@ -56,10 +52,6 @@ services:
     build: ./service-catalog/
     ports:
       - "8082:8080"
-    develop:
-      watch:
-        - action: rebuild
-          path: ./service-catalog
 
 volumes:
   grafana_storage: {}
