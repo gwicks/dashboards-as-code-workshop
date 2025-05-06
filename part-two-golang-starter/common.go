@@ -91,6 +91,13 @@ func lokiQuery(expression string) *loki.DataqueryBuilder {
 		LegendFormat("__auto")
 }
 
+func lokiQueryWithLegendFmt(expression string, legendFmt string) *loki.DataqueryBuilder {
+	return loki.NewDataqueryBuilder().
+		Expr(expression).
+		QueryType("range").
+		LegendFormat(legendFmt)
+}
+
 // prometheusDatasourceRef returns a reference to the Prometheus datasource
 // used by the workshop stack.
 func prometheusDatasourceRef() dashboard.DataSourceRef {

@@ -3,8 +3,70 @@ package main
 import (
 	"fmt"
 
+	"github.com/grafana/grafana-foundation-sdk/go/common"
 	"github.com/grafana/grafana-foundation-sdk/go/dashboard"
+	"github.com/grafana/grafana-foundation-sdk/go/stat"
+	"github.com/grafana/grafana-foundation-sdk/go/text"
+	"github.com/grafana/grafana-foundation-sdk/go/timeseries"
 )
+
+func verisonPanelForSvc(serviceName string) *stat.PanelBuilder {
+	promQuery := fmt.Sprintf("app_infos{service=\"%s\"}", serviceName)
+	versionPanelReduceOpts := common.NewReduceDataOptionsBuilder().Calcs([]string{"last"}).Fields("/^version$/").Values(false)
+	return stat.NewPanelBuilder().Title("Version").
+		Datasource(prometheusDatasourceRef()).
+		WithTarget(instantPrometheusQuery(promQuery)).
+		Transparent(true).ReduceOptions(versionPanelReduceOpts)
+}
+
+func serviceDescPanel(mdText string) *text.PanelBuilder {
+	return text.NewPanelBuilder().Content(mdText).Mode(text.TextModeMarkdown).Transparent(true)
+}
+
+func logsVolumePanelForSvc(serviceName string) *timeseries.PanelBuilder {
+	// * "Logs volume" panel. Height: 4, Span: 16
+	//   - type: `timeseries`
+	//   - query: `sum by (level) (count_over_time({service="[service_name]", level=~"$logs_level"} |~ "$logs_filter" [$__auto]))`
+	//     - legend format: `{{level}}`
+	//   - stacking mode: normal
+	//   - `legend` options:
+	//     - displayMode: `list`
+	//     - placement: `bottom`
+	//     - showLegend: `true`
+	//   - draw style: bars
+	//   - override by name:
+	//     - name: "INFO"
+	//     - value: `color = {"mode": "fixed", "fixedColor": "green"}`
+	//   - override by name:
+	//     - name: "ERROR"
+	//     - value: `color = {"mode": "fixed", "fixedColor": "red"}`
+	//   - height: 4
+	//   - span: 16
+	lokiQueryStr := fmt.Sprintf("sum by (level) (count_over_time({service=\"%s\", level=~\"$logs_level\"} |~ \"$logs_filter\" [$__auto]))", serviceName)
+	return timeseries.NewPanelBuilder().
+		Title("Logs volume").
+		Datasource(lokiDatasourceRef()).
+		WithTarget(lokiQueryWithLegendFmt(lokiQueryStr, "{{level}}")).
+		Stacking(common.NewStackingConfigBuilder().Mode(common.StackingModeNormal)).
+		DrawStyle(common.GraphDrawStyleBars).
+		Legend(common.NewVizLegendOptionsBuilder().
+			Placement(common.LegendPlacementRight).
+			ShowLegend(true).
+			DisplayMode(common.LegendDisplayModeList),
+		).
+		OverrideByName("INFO", []dashboard.DynamicConfigValue{
+			{
+				Id:    "color",
+				Value: map[string]any{"mode": "fixed", "fixedColor": "green"},
+			},
+		}).
+		OverrideByName("ERROR", []dashboard.DynamicConfigValue{
+			{
+				Id:    "color",
+				Value: map[string]any{"mode": "fixed", "fixedColor": "red"},
+			},
+		})
+}
 
 func dashboardForService(service Service) *dashboard.DashboardBuilder {
 	builder := dashboard.NewDashboardBuilder(fmt.Sprintf("%s service overview", service.Name)).
@@ -24,6 +86,24 @@ func dashboardForService(service Service) *dashboard.DashboardBuilder {
 		).
 		WithVariable(logLevelsVariable(service))
 
+	builder.
+		WithPanel(verisonPanelForSvc(service.Name).Height(4).Span(4)).
+		WithPanel(serviceDescPanel(service.Description).Height(4).Span(4)).
+		WithPanel(logsVolumePanelForSvc(service.Name).Height(4).Span(16))
+
+	if service.HasGRPC {
+		builder.WithRow(dashboard.NewRowBuilder("gRPC")).
+			WithPanel(grpcRequestsTimeseries(service).Height(8)).
+			WithPanel(grpcLatenciesHeatmap(service).Height(8)).
+			WithPanel(grpcLogsPanel(service).Height(8).Span(24))
+	}
+
+	if service.HasHTTP {
+		builder.WithRow(dashboard.NewRowBuilder("HTTP")).
+			WithPanel(httpRequestsForSvc(service).Height(8).Span(12)).
+			WithPanel(httpRequestLatenciesForSvc(service).Height(8).Span(12)).
+			WithPanel(httpLogsForSvc(service).Height(8).Span(24))
+	}
 	// TODO:
 	// * "Version" panel
 	//   - type: `stat`
