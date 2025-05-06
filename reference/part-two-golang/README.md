@@ -10,7 +10,7 @@ go mod vendor
 ## Running the code
 
 ```shell
-go run *.go
+go run .
 ```
 
 It will generate a single dashboard, with a hardcoded service configuration.
