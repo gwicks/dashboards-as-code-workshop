@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/grafana/grafana-foundation-sdk/go/common"
 	"github.com/grafana/grafana-foundation-sdk/go/dashboard"
 	"github.com/grafana/grafana-foundation-sdk/go/logs"
 	"github.com/grafana/grafana-foundation-sdk/go/stat"
@@ -26,7 +27,8 @@ func testDashboard() *dashboard.DashboardBuilder {
 }
 
 func prometheusVersionStat() *stat.PanelBuilder {
-	return statPanel()
+	reduceOptions := common.NewReduceDataOptionsBuilder().Calcs([]string{"last"}).Fields("/^version$/")
+	return statPanel().Title("Prometheus version").Transparent(true).ReduceOptions(reduceOptions).Datasource(prometheusDatasourceRef()).WithTarget(instantPrometheusQuery("prometheus_build_info{}"))
 	// TODO: configure the panel
 	//
 	//  * `title`: `Prometheus version`
@@ -41,7 +43,7 @@ func prometheusVersionStat() *stat.PanelBuilder {
 }
 
 func descriptionText() *text.PanelBuilder {
-	return textPanel("")
+	return textPanel("Text panels are supported too! Even with *markdown* text :)").Transparent(true)
 	// TODO: configure the panel
 	//
 	//  * `content`: `Text panels are supported too! Even with *markdown* text :)`
@@ -51,7 +53,7 @@ func descriptionText() *text.PanelBuilder {
 }
 
 func unfilteredLogs() *logs.PanelBuilder {
-	return logPanel()
+	return logPanel().Title("Logs").Datasource(lokiDatasourceRef()).WithTarget(lokiQuery("{job=\"app_logs\"}"))
 	// TODO: configure the panel
 	//
 	//  * `title`: `Logs`
@@ -62,7 +64,7 @@ func unfilteredLogs() *logs.PanelBuilder {
 }
 
 func prometheusGoroutinesTimeseries() *timeseries.PanelBuilder {
-	return timeseriesPanel()
+	return timeseriesPanel().Title("Prometheus goroutines").Datasource(prometheusDatasourceRef()).WithTarget(prometheusQuery("go_goroutines{job=\"prometheus\"}"))
 	// TODO: configure the panel
 	//
 	//  * `title`: `Prometheus goroutines`

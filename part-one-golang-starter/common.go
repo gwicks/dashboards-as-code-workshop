@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/grafana/grafana-foundation-sdk/go/cog"
+	"github.com/grafana/grafana-foundation-sdk/go/common"
 	"github.com/grafana/grafana-foundation-sdk/go/dashboard"
 	"github.com/grafana/grafana-foundation-sdk/go/logs"
 	"github.com/grafana/grafana-foundation-sdk/go/loki"
@@ -22,7 +23,7 @@ func statPanel() *stat.PanelBuilder {
 
 // textPanel creates a text panel pre-configured for markdown content.
 func textPanel(content string) *text.PanelBuilder {
-	return text.NewPanelBuilder()
+	return text.NewPanelBuilder().Content(content).Mode(text.TextModeMarkdown)
 	// TODO: configure default options for text panels
 	//
 	//  * `content` set to content
@@ -33,7 +34,8 @@ func textPanel(content string) *text.PanelBuilder {
 
 // timeseriesPanel creates a pre-configured timeseries panel.
 func timeseriesPanel() *timeseries.PanelBuilder {
-	return timeseries.NewPanelBuilder()
+	legendOptions := common.NewVizLegendOptionsBuilder().DisplayMode(common.LegendDisplayModeList).Placement(common.LegendPlacementBottom).ShowLegend(true)
+	return timeseries.NewPanelBuilder().FillOpacity(20).GradientMode(common.GraphGradientModeOpacity).Legend(legendOptions)
 	// TODO: configure default options for timeseries panels
 	//
 	//  * `fillOpacity` set to `20`
@@ -48,7 +50,7 @@ func timeseriesPanel() *timeseries.PanelBuilder {
 
 // logPanel creates a pre-configured logs panel.
 func logPanel() *logs.PanelBuilder {
-	return logs.NewPanelBuilder()
+	return logs.NewPanelBuilder().ShowTime(true).SortOrder(common.LogsSortOrderDescending).EnableLogDetails(true)
 	// TODO: configure default options for logs panels
 	//
 	//  * `showTime` set to `true`
