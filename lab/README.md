@@ -1,7 +1,7 @@
 # Hands-on lab — Grafana as code: Build and deploy your dashboards at scale
 
 1. [Prerequisites](./prerequisites.md)
-2. [Concepts](./concepts.md.md)
+2. [Concepts](./concepts.md)
 3. [Part one: first dashboard as code](./part-one.md)
    1. [The objective](./part-one.md#the-objective)
    2. [What's provided](./part-one.md#whats-provided)
